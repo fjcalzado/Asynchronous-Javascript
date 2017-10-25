@@ -2,4 +2,4 @@
 
 ## Synchronous vs Asynchronous
 
-![Infographics](src/infographics/Sync_vs_Async.svg)
+![Infographics](https://github.com/fjcalzado/Asynchronous-Javascript/blob/master/src/infographics/Sync_vs_Async.svg)
