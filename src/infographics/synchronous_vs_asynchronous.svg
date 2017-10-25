@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1076.95 784.46">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700');
+      .cls-1 {
+        fill: #f5f5f6;
+      }
+
+      .cls-2 {
+        fill: #5c5d60;
+      }
+
+      .cls-3,
+      .cls-4 {
+        fill: #8e99f3;
+      }
+
+      .cls-4 {
+        font-size: 24px;
+        font-family: Montserrat-Bold, Montserrat;
+      }
+
+      .cls-5 {
+        font-weight: 700;
+      }
+
+      .cls-6 {
+        letter-spacing: 0em;
+      }
+
+      .cls-7 {
+        fill: #fff;
+        font-family: Montserrat-Light, Montserrat;
+      }
+
+      .cls-8 {
+        letter-spacing: -0.01em;
+      }
+
+      .cls-9 {
+        letter-spacing: -0.03em;
+      }
+
+      .cls-10 {
+        letter-spacing: 0em;
+      }
+
+      .cls-11 {
+        letter-spacing: 0em;
+      }
+
+      .cls-12 {
+        letter-spacing: 0em;
+      }
+
+      .cls-13 {
+        letter-spacing: -0.02em;
+      }
+
+      .cls-14 {
+        letter-spacing: -0.03em;
+      }
+
+      .cls-15 {
+        letter-spacing: -0.01em;
+      }
+
+      .cls-16 {
+        letter-spacing: -0.03em;
+      }
+
+      .cls-17,
+      .cls-18,
+      .cls-20,
+      .cls-21 {
+        fill: none;
+        stroke: #8e99f3;
+        stroke-miterlimit: 10;
+        stroke-width: 4px;
+      }
+
+      .cls-18 {
+        stroke-dasharray: 4.02 4.02;
+      }
+
+      .cls-19 {
+        fill: #8a8c8e;
+      }
+
+      .cls-20 {
+        stroke-dasharray: 3.99 3.99;
+      }
+
+      .cls-21 {
+        stroke-dasharray: 4.07 4.07;
+      }
+
+      .cls-22 {
+        letter-spacing: -0.02em;
+      }
+
+      .cls-23 {
+        letter-spacing: -0.02em;
+      }
+
+      .cls-24 {
+        letter-spacing: -0.03em;
+      }
+
+      .cls-25 {
+        letter-spacing: 0.01em;
+      }
+    </style>
+  </defs>
+  <title>Sync_vs_Async</title>
+  <g id="BASE">
+    <rect id="Draw_Background" data-name="Draw Background" class="cls-1" x="55.78" y="52.07" width="425.2" height="425.2" />
+    <rect id="Text_Background" data-name="Text Background" class="cls-2" x="55.78" y="477.27" width="425.2" height="255.12"
+    />
+  </g>
+  <g id="Drawing">
+    <rect id="Draw_Background-2" data-name="Draw Background" class="cls-1" x="595.97" y="52.07" width="425.2" height="425.2"
+    />
+    <rect id="Text_Background-2" data-name="Text Background" class="cls-2" x="595.97" y="477.27" width="425.2" height="255.12"
+    />
+    <rect class="cls-3" x="821.21" y="241.43" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <text class="cls-4" transform="translate(702.06 538.38)">
+      <tspan class="cls-5">
+        <tspan class="cls-6">A</tspan>
+        <tspan x="18.48" y="0">SYNCHRONOUS</tspan>
+      </tspan>
+      <tspan class="cls-7">
+        <tspan x="-68.7" y="57.6">Sta</tspan>
+        <tspan class="cls-8" x="-31.09" y="57.6">t</tspan>
+        <tspan x="-22.04" y="57.6">ements </tspan>
+        <tspan class="cls-9" x="73.62" y="57.6">c</tspan>
+        <tspan class="cls-10" x="86.34" y="57.6">an go outside </tspan>
+        <tspan class="cls-11" x="252.61" y="57.6">o</tspan>
+        <tspan class="cls-12" x="267.32" y="57.6">f </tspan>
+        <tspan x="-52.86" y="86.4">the main fl</tspan>
+        <tspan class="cls-13" x="74.92" y="86.4">o</tspan>
+        <tspan class="cls-10" x="89.29" y="86.4">w, all</tspan>
+        <tspan class="cls-13" x="147.92" y="86.4">o</tspan>
+        <tspan x="162.3" y="86.4">wing the</tspan>
+        <tspan x="-64.92" y="115.2">prog</tspan>
+        <tspan class="cls-14" x="-9.91" y="115.2">r</tspan>
+        <tspan class="cls-10" x="-1.75" y="115.2">am </tspan>
+        <tspan class="cls-15" x="43.7" y="115.2">t</tspan>
+        <tspan x="52.75" y="115.2">o progress with the</tspan>
+        <tspan x="51.74" y="144">n</tspan>
+        <tspan class="cls-16" x="67.44" y="144">e</tspan>
+        <tspan x="80.86" y="144">xt task.</tspan>
+      </tspan>
+    </text>
+    <line class="cls-17" x1="268.37" y1="131.16" x2="268.37" y2="133.16" />
+    <line class="cls-18" x1="268.37" y1="137.17" x2="268.37" y2="392.15" />
+    <line class="cls-17" x1="268.37" y1="394.16" x2="268.37" y2="396.16" />
+    <rect class="cls-19" x="197.51" y="109.9" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <rect class="cls-19" x="197.51" y="176.15" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <rect class="cls-19" x="197.51" y="242.4" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <rect class="cls-19" x="197.51" y="308.65" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <rect class="cls-19" x="197.51" y="374.9" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <line class="cls-17" x1="732.07" y1="164.66" x2="732.07" y2="166.66" />
+    <line class="cls-20" x1="732.07" y1="170.65" x2="732.07" y2="360.23" />
+    <line class="cls-17" x1="732.07" y1="362.23" x2="732.07" y2="364.23" />
+    <rect class="cls-19" x="661.21" y="138.9" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <rect class="cls-19" x="661.21" y="204.17" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <rect class="cls-19" x="661.21" y="273.7" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <rect class="cls-19" x="661.21" y="338.97" width="141.73" height="42.52" rx="5.67" ry="5.67" />
+    <line class="cls-17" x1="731.86" y1="260.69" x2="733.86" y2="260.69" />
+    <line class="cls-21" x1="737.93" y1="260.69" x2="907.03" y2="260.69" />
+    <line class="cls-17" x1="909.07" y1="260.69" x2="911.07" y2="260.69" />
+  </g>
+  <g id="Text">
+    <text class="cls-4" transform="translate(171.1 567.18)">
+      <tspan class="cls-5">SYNCHRONOUS</tspan>
+      <tspan class="cls-7">
+        <tspan class="cls-22" x="-67.41" y="57.6">C</tspan>
+        <tspan x="-51.02" y="57.6">ode </tspan>
+        <tspan class="cls-16" x="0.77" y="57.6">e</tspan>
+        <tspan class="cls-23" x="14.18" y="57.6">x</tspan>
+        <tspan x="26.16" y="57.6">ecu</tspan>
+        <tspan class="cls-8" x="69.24" y="57.6">t</tspan>
+        <tspan x="78.29" y="57.6">ed in sequen</tspan>
+        <tspan class="cls-24" x="230.37" y="57.6">c</tspan>
+        <tspan x="243.21" y="57.6">e,</tspan>
+        <tspan x="-78.96" y="86.4">one sta</tspan>
+        <tspan class="cls-8" x="6.05" y="86.4">t</tspan>
+        <tspan x="15.1" y="86.4">ement a</tspan>
+        <tspan class="cls-25" x="113.76" y="86.4">f</tspan>
+        <tspan class="cls-8" x="121.68" y="86.4">t</tspan>
+        <tspan x="130.73" y="86.4">er the other.</tspan>
+      </tspan>
+    </text>
+  </g>
+</svg>
