@@ -17,6 +17,6 @@ While synchronous stresses the idea that an order must be followed and each task
 On the other hand, asynchronous and non-blocking may slightly differ depending on the context. Certainly, they are pretty similar concepts aimed towards a more efficient execution flow. However, they fall back in different mechanisms to get the job done. 
 
 - `Non-Blocking`: A non-blocking call returns immediately with whatever result it has; data, no-data, error or even a message saying '*hey, this call will block you, postpone it when you have nothing to do*'. It is implied that some sort of polling must be done to get the rest of the data or just to place a new request in a better moment.
-- `Asynchronous`: An asynchronous call will also return immediately cause it just invokes a task that will keep progressing in the background and will signal its completion using a specific mechanism such as a registered callback, promise or event. We will explain them later.
+- `Asynchronous`: An asynchronous call will also return immediately. It just invokes a task that will keep progressing in the background and will signal its completion using a specific mechanism such as a registered callback, promise or event. We will explain them later.
 
 ![Infographics](src/infographics/async_vs_nonblocking.png)
