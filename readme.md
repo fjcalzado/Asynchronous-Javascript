@@ -1,9 +1,9 @@
-## Asynchronous Javascript
+![Asynchronous Javascript Header](src/infographics/header.png)
+
 
 The goal of this guide is to explain asynchronous programming in Javascript with the help of clean and easy figures to grasp key concepts in a glimpse. 
 
 First of all, let's review some of these concepts before entering into deeper detail.
-
 
 # SYNCHRONOUS vs BLOCKING vs ASYNCHRONOUS vs NON-BLOCKING
 
