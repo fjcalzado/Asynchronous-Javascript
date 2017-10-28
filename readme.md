@@ -5,6 +5,10 @@ The goal of this guide is to explain asynchronous programming in Javascript with
 
 Let's review some of these concepts before going deeper into Javascript.
 
+# Concurrency
+
+![Concurrency Scenarios](src/png/concurrency.png)
+
 # Synchronous vs Blocking vs Asynchronous vs Non-blocking
 
 Synchronous and blocking can be considered synonyms in practical terms: 
