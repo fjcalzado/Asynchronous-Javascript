@@ -3,7 +3,7 @@
 
 The goal of this guide is to explain asynchronous programming in Javascript with the help of clean and easy figures to grasp key concepts in a glimpse. 
 
-First of all, let's review some of these concepts before entering into deeper detail.
+Let's review some of these concepts before going deeper into Javascript.
 
 # Synchronous vs Blocking vs Asynchronous vs Non-blocking
 
