@@ -3,7 +3,9 @@
 
 The goal of this guide is to explain asynchronous programming in Javascript with the help of clean and easy figures to grasp key concepts in a glimpse. 
 
-Let's review some of these concepts before going deeper into Javascript.
+First, we will review useful key concepts to better understand the idea behind asynchronous programming in general. Then, we will move our focus to the specific Javascript scenario to verify how these concepts are applied. Finally, we will see the most common asynchronous patterns in Javascript through examples.
+
+Let's refresh these concepts before going deeper into Javascript.
 
 # Concurrency
 
