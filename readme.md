@@ -5,7 +5,12 @@ The goal of this guide is to explain asynchronous programming in Javascript with
 
 First, we will review useful general ideas to better understand what's behind asynchronous programming. Then, we will move our focus to the specific Javascript scenario to verify how these concepts are applied. Finally, we will see the most common asynchronous patterns in Javascript through examples.
 
-Let's refresh these concepts before going deeper.
+## Table of Contents
+
+- [Concurrency & Parallelism](#concurrency--parallelism)
+- [CPU-Bound vs I/O-Bound Operations](#cpu-bound-vs-io-bound-operations)
+- [I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous](#io-flavors-blocking-vs-non-blocking--synchronous-vs-asynchronous)
+- [Javascript](#javascript)
 
 # Concurrency & Parallelism
 
@@ -43,7 +48,7 @@ By nature, CPU-bound operations are synchronous, although interleaving or parall
 
 This terms are not applied consistently in every scenario and it all depends on the context. Many times they are used as synonyms or mixed up to refer to the same thing.
 
-A possible classification in the context of I/O would be better understood if we imagine I/O operations comprising two phases: **wait** for the device to be ready or the data to be available and then **execute** the operation itself, whatever is intended for, read, write, etc.
+A possible classification in the context of I/O would be better understood if we imagine I/O operations comprising two phases: **wait** for the device to be ready or the data to be available and then **execute** the operation itself, whatever is intended for: read, write, etc.
 
 Blocking vs Non-Blocking refers to how waiting time affects to our main program:
 
@@ -71,7 +76,6 @@ Combining these flavors, we can classify I/O operations by its nature:
 - `Asynchronous` `Non-Blocking` I/O: 
   - I/O request returns immediately returns to avoid blocking.
   - A notification is sent once completed. Then, a function to process the response is scheduled to be run at some point in our execution flow.
-
 
 # Javascript 
 
