@@ -26,34 +26,49 @@ HIGH LEVEL - JAVASCRIPT
 ```
 
 
-# INTRO
-
-The goal of this guide is to explain asynchronous programming in Javascript with the help of clean and easy figures to grasp key concepts in a glimpse. 
-
-First of all, let's quickly review some of these concepts before entering into deeper detail.
+# CONCURRENCY
 
 
-# IDEAS
+Concurrency is much broader, general problem than parallelism
 
-Concurrency
+Parallelism, literally running simultaneously, at the exact same time.
 
-Interleaving is a common mechanism to implement concurrency in scenarios with limited resources. Think of any modern OS trying to do multitasking in the background with a single or few cores. It just slices up concurrent tasks and interleave them, so each one will run for a short time.
+These two concepts are very often confused between them. While concurrency is a much broader, general problem than parallelism, the later represents a specific case of concurrency. 
+
+Many people still believe that concurrency implies more than one thread, this is not true. Interleaving is a common mechanism to implement concurrency in scenarios with limited resources. Think of any modern OS trying to do multitasking in the background with a single or few cores. It just slices up concurrent tasks and interleave them, so each one will run for a short time and all of them will progress in the long term.
 
 
+# JAVASCRIPT 
 
- Javascript uses an asynchronous non-blocking model, with a single-threaded event loop for its I/O interfaces. This can be summarized in the following figure:
+Javascript uses an asynchronous non-blocking model, with a single-threaded event loop for its I/O interfaces. This can be summarized in the following figure:
 
- [FIGURE WITH NUMBERED 'STEPS']
+[FIGURE WITH NUMBERED 'STEPS']
 
 - NON-BLOCKING STAGE -
- 1. An I/O operation is requested. Its non blocking nature means there is no waiting time 'to be ready' (this can be achieved through polling as we seen before, but this is transparent to us). We can keep executing tasks in the meantime. Our program flow won't be blocked.
- 2. There is a context change where the real operation will hapen (e.g.: fetching data from a server, writing to a file, etc). This is out of our domain.
- - ASYNCHRONOUS STAGE -
- 3. Completion of the operation will be signaled asynchronously. A notification, translated into a message, is enqueued in a list of messages waiting to be processed by the Javascript runtime.
- 4. Once the message is processed, a previously registered function (callback) will be run in our execution thread. The aim of the callback is to do whatever we want to do as a response of the I/O operation (e.g.: consume the data received, confirm an operation has been done succesfully, etc.).  
+
+1. An I/O operation is requested. Its non blocking nature means there is no waiting time 'to be ready' (this can be achieved through polling as we seen before, but this is transparent to us). We can keep executing tasks in the meantime. Our program flow won't be blocked.
+2. There is a context change where the real operation will hapen (e.g.: fetching data from a server, writing to a file, etc). This is out of our domain.
+
+- ASYNCHRONOUS STAGE -
+
+3. Completion of the operation will be signaled asynchronously. A notification, translated into a message, is enqueued in a list of messages waiting to be processed by the Javascript runtime.
+4. Once the message is processed, a previously registered function (callback) will be run in our execution thread. The aim of the callback is to do whatever we want to do as a response of the I/O operation (e.g.: consume the data received, confirm an operation has been done succesfully, etc.).  
+
 
 IMPORTANT: How JS implements concurrency via its event-loop model
 "JavaScript execution in Node.js is single threaded, so concurrency refers to the event loop's capacity to execute JavaScript callback functions after completing other work. Any code that is expected to run in a concurrent manner must allow the event loop to continue running as non-JavaScript operations, like I/O, are occurring."
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

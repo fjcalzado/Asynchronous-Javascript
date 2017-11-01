@@ -7,9 +7,33 @@ First, we will review useful general ideas to better understand what's behind as
 
 Let's refresh these concepts before going deeper.
 
-# Concurrency and Parallelism
+# Concurrency & Parallelism
+
+Concurrency and parallelism are related concepts, very often confused, with important differences between them. A simple definition would be:
+
+- `Concurrency`: two or more tasks make progress at the same time. 
+- `Parallelism`: tasks literally run simultaneously, at the exact same instant.
+
+While concurrency is a much broader, general problem than parallelism, the later represents a specific case of concurrency where true simultaneity happens.
+
+Many people still believe that concurrency implies more than one thread, **this is not true**. Interleaving is a common mechanism to implement concurrency in scenarios with limited resources. Think of any modern OS trying to do multitasking in the background with a single or few cores. It just slices up concurrent tasks and interleave them, so each one will run for a short time and all of them will progress in the long term.
+
+Let's illustrate this:
 
 ![Concurrency Scenarios](src/png/concurrency.png)
+
+- **Scenario 1** is neither concurrent nor parallel. It is just a sequential execution, each task at a time. 
+- **Scenarios 2**, **3** and **4** depicts concurrency implemented under different techniques:
+  - **Scenario 3** illustrates how concurrency can be achieved with a single core. Slices of each tasks are interleaved to keep progress on both. This is possible as long as tasks can be decomposed into simpler subtasks.
+  - **Scenarios 2** and **4** draw parallelism using multiple threads where tasks or subtasks run in parallel at the exact same time. While threads of **2** are sequential, interleaving is applied in **4**.
+
+# CPU Bound vs I/O Bound Operations
+
+So far we have seen tasks that consume CPU resources, they carry a workload (piece of code) to be executed in our application. These are called **CPU-Bound** operations.
+
+Programs, however, may also consist in reading data from disk, accessing an external device or fetching some data over the network. All these input/output operations trigger requests that are attended outside our program execution context. Therefore, **I/O-Bound** operations do not '*run*' or '*execute*' in our application domain.  
+
+Asynchrony is another form of concurrency as we will see in the next section. 
 
 # I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous
 
@@ -32,14 +56,23 @@ While synchronous vs asynchronous determine when execution takes place:
 ![Synchronous vs Asynchronous](src/png/sync_async.png)
 
 
-Combining different fashions we can classify I/O operations by its nature:
+Combining these flavors, we can classify I/O operations by its nature:
 
 - `Synchronous` `Blocking` I/O. The whole operation is done in one shot blocking the execution flow:
-  - The thread is blocked in order to wait for the device to be ready.
+  - The thread is blocked while waiting.
   - The response is processed immediately afterwards. 
-- `Synchronous` `Non-Blocking` I/O. Similar to the previous one but using polling to avoid blocking in the first stage:
-  - Operation will not block the thread, instead, polling is used.
+- `Synchronous` `Non-Blocking` I/O. Similar to the previous one but using any polling technique to avoid blocking in the first stage:
+  - Calls returns immediately, thread not blocked. A *try later* approach may be needed.
   - The response is processed immediately when received.
 - `Asynchronous` `Non-Blocking` I/O: 
-  -  We just send an I/O request that immediately returns to avoid blocking. There is no need for active polling in this case. OS takes care of everything and keep it transparent to us.
+  - I/O request returns immediately returns to avoid blocking.
   - A notification is sent once completed. Then, a function to process the response is scheduled to be run at some point in our execution flow.
+
+
+# Javascript 
+
+Javascript is aimed to be run on browsers, dealing with network requests and user interactions, all at the same time. Therefore, Javascript has evolved to be good for I/O-bound applications. For that reason:
+
+> Javascript uses an asynchronous non-blocking model, with a single-threaded event loop for its I/O interfaces.
+
+This can be summarized in the following figure:
