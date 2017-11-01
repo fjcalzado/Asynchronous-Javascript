@@ -46,7 +46,7 @@ By nature, CPU-bound operations are synchronous, although interleaving or parall
 
 # I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous
 
-This terms are not applied consistently in every scenario and it all depends on the context. Many times they are used as synonyms or mixed up to refer to the same thing.
+This terms are not applied consistently in every scenario and it depends on the context. Many times they are used as synonyms or mixed up to refer to the same thing.
 
 A possible classification in the context of I/O would be better understood if we imagine I/O operations comprising two phases: **wait** for the device to be ready or the data to be available and then **execute** the operation itself, whatever is intended for: read, write, etc.
 
