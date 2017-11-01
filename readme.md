@@ -27,13 +27,17 @@ Let's illustrate this:
   - **Scenario 3** illustrates how concurrency can be achieved with a single core. Slices of each tasks are interleaved to keep progress on both. This is possible as long as tasks can be decomposed into simpler subtasks.
   - **Scenarios 2** and **4** draw parallelism using multiple threads where tasks or subtasks run in parallel at the exact same time. While threads of **2** are sequential, interleaving is applied in **4**.
 
-# CPU Bound vs I/O Bound Operations
+# CPU-Bound vs I/O-Bound Operations
 
-So far we have seen tasks that consume CPU resources, they carry a workload (piece of code) to be executed in our application. These are called **CPU-Bound** operations.
+So far we have seen tasks that consume CPU resources, they carry a workload (piece of code) to be executed in our application. These are called **CPU-bound** operations.
 
-Programs, however, may also consist in reading data from disk, accessing an external device or fetching some data over the network. All these input/output operations trigger requests that are attended outside our program execution context. Therefore, **I/O-Bound** operations do not '*run*' or '*execute*' in our application domain.  
+Programs, however, may also consist in reading data from disk, accessing an external device or fetching some data over the network. All these input/output operations trigger requests that are attended outside our program execution context. Therefore, **I/O-bound** operations do not '*run*' or '*execute*' in our application domain.  
 
-Asynchrony is another form of concurrency as we will see in the next section. 
+![CPU-bound vs I/O-bound](src/png/cpu_io.png)
+
+Bound operations also implies bottleneck with the resource is bound to. Increasing CPU resources will improve CPU-bound operations performance, while a better I/O system will boost I/O-bound operations. 
+
+By nature, CPU-bound operations are synchronous, although interleaving or parallelism can be used to achieve concurrency. One interesting fact of I/O-bound operations is that they can be asynchronous, and, asynchrony is a very useful form of concurrency as we will see in the next section.
 
 # I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous
 
