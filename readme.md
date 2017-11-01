@@ -7,22 +7,39 @@ First, we will review useful general ideas to better understand what's behind as
 
 Let's refresh these concepts before going deeper.
 
-# Concurrency
+# Concurrency and Parallelism
 
 ![Concurrency Scenarios](src/png/concurrency.png)
 
-# Synchronous vs Blocking vs Asynchronous vs Non-blocking
+# I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous
 
-Synchronous and blocking can be considered synonyms in practical terms: 
-- `Synchronous` / `Blocking`: sequential execution that pontentially may block the thread due to CPU intensive processing or waiting time.
+This terms are not applied consistently in every scenario and it all depends on the context. Many times they are used as synonyms or mixed up to refer to the same thing.
 
-While synchronous stresses the idea that an order must be followed and each task must wait to the previous one to complete, blocking emphasizes the capacity to slow down the execution flow.
+A possible classification in the context of I/O would be better understood if we imagine I/O operations comprising two phases: **wait** for the device to be ready or the data to be available and then **execute** the operation itself, whatever is intended for, read, write, etc.
 
-![Synchronous / Blocking](src/png/sync_blocking.png)
+Blocking vs Non-Blocking refers to how waiting time affects to our main program:
 
-On the other hand, asynchronous and non-blocking slightly differ depending on the context. Certainly, they are pretty similar concepts aimed to improve execution flow efficiency, they use different mechanisms though:
+- `Blocking`: A blocking call does not return control to the application until is completed. Thread is locked in the meantime by putting it to wait state.
+- `Non-Blocking`: A non-blocking call returns immediately with whatever result it has. In case it could be completed, it will return the desired data. Otherwise, if the operation could not be immediately satisfied, it will provide an error code indicating something like '*Temporarily unavailable*', '*I am not ready*' or '*I will block. Please, postpone the call*'. It is implied that some sort of polling is done to complete the job or to place a new request in a better moment.
 
-- `Non-Blocking`: A non-blocking call returns immediately with whatever result it has; data, no-data, error or even a message saying '*hey, I will block, postpone the call*'. It is implied that some sort of polling is done to complete the job or even to place a new request in a better moment.
-- `Asynchronous`: An asynchronous call will also return immediately. It just invokes a task that will keep progressing in the background and will signal its completion using a specific mechanism such as a registered callback, promise or event. We will explain them later.
+![Blocking vs Non Blocking](src/png/blocking_non_blocking.png)
 
-![Asynchronous vs Non Blocking](src/png/async_vs_nonblocking.png)
+While synchronous vs asynchronous determine when execution takes place:
+
+- `Synchronous`: blocking and synchronous are used as synonyms many times, meaning that the whole I/O operation is executed sequentially and therefore we must wait for it to complete.
+- `Asynchronous`: the completion of the operation is later signaled using a specific mechanism such as a registered callback, promise or event (they will be explained later) which make possible to defer the processing of the response. Also, this is non-blocking by nature, as the I/O call returns immediately.
+
+![Synchronous vs Asynchronous](src/png/sync_async.png)
+
+
+Combining different fashions we can classify I/O operations by its nature:
+
+- `Synchronous` `Blocking` I/O. The whole operation is done in one shot blocking the execution flow:
+  - The thread is blocked in order to wait for the device to be ready.
+  - The response is processed immediately afterwards. 
+- `Synchronous` `Non-Blocking` I/O. Similar to the previous one but using polling to avoid blocking in the first stage:
+  - Operation will not block the thread, instead, polling is used.
+  - The response is processed immediately when received.
+- `Asynchronous` `Non-Blocking` I/O: 
+  -  We just send an I/O request that immediately returns to avoid blocking. There is no need for active polling in this case. OS takes care of everything and keep it transparent to us.
+  - A notification is sent once completed. Then, a function to process the response is scheduled to be run at some point in our execution flow.

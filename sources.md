@@ -1,6 +1,10 @@
 
 # Low Level Concepts
 
+This is definitely the key and the best explained I/O stuff with all these concepts explained in my opinion: 
+https://chamibuddhika.wordpress.com/2012/08/11/io-demystified/
+https://blog.risingstack.com/concurrency-and-parallelism-understanding-i-o/
+
 https://codewala.net/2015/07/29/concurrency-vs-multi-threading-vs-asynchronous-programming-explained/
 http://blog.stephencleary.com/2013/11/there-is-no-thread.html
 http://blog.stephencleary.com/2014/04/a-tour-of-task-part-0-overview.html
