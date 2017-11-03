@@ -44,15 +44,11 @@ Javascript uses an asynchronous non-blocking model, with a single-threaded event
 
 [FIGURE WITH NUMBERED 'STEPS']
 
-- NON-BLOCKING STAGE -
-
-1. An I/O operation is requested. Its non-blocking nature means there is no waiting time 'to be ready' (this can be achieved through polling as we seen before, but this is transparent to us). We can keep executing tasks in the meantime. Our program flow won't be blocked.
-2. There is a context change where the real operation will hapen (e.g.: fetching data from a server, writing to a file, etc). This is out of our domain.
-
-- ASYNCHRONOUS STAGE -
-
-3. Completion of the operation will be signaled asynchronously. A notification, translated into a message, is enqueued in a list of messages waiting to be processed by the Javascript runtime.
-4. Once the message is processed, a previously registered function (callback) is scheduled in our execution thread. The aim of the callback is to do whatever we want to do as a response of the I/O operation (e.g.: consume the data received, confirm an operation has been done succesfully, etc.).  
+1. An I/O operation is requested. Its non-blocking nature means that returns immediately. Our program flow will not be blocked and we can keep executing tasks in the meantime.
+2. A system call initializes a context change, where the real operation will hapen (e.g: wait for a delay, fetch some data, etc). The SO will take care of everything.
+3. Completion of the operation will be signaled asynchronously. A notification, translated into a message, is enqueued in a list of messages pending to be processed by the Javascript runtime.
+4. The event loop processes one message at a time. We must wait for our turn. More details later.
+5. Once the message is processed, a previously registered function (callback) is scheduled in our execution thread. The aim of the callback is to do whatever we want to do as a response of the I/O operation (e.g.: consume the data received, confirm that an operation has been done succesfully, etc.). 
 
 
 IMPORTANT: How JS implements concurrency via its event-loop model

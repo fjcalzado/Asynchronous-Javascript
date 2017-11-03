@@ -88,13 +88,9 @@ Javascript is aimed to run on browsers, dealing with network requests and user i
 
 This approach makes Javascript highly concurrent with just one thread. Let's see, step by step, a typical asynchronous request in Javascript:
 
-![Javascript asynchronous call](src/png/async_call.png)
+![Javascript asynchronous call](src/png/async_call_steps.png)
 
-1. An I/O operation is requested. Its non-blocking nature means that returns immediately. Our program flow will not be blocked and we can keep executing tasks in the meantime.
-2. A system call initializes a context change, where the real operation will hapen (e.g: wait for a delay, fetch some data, etc). The SO will take care of everything.
-3. Completion of the operation will be signaled asynchronously. A notification, translated into a message, is enqueued in a list of messages pending to be processed by the Javascript runtime.
-4. The event loop processes one message at a time. We must wait for our turn. More details later.
-5. Once the message is processed, a previously registered function (callback) is scheduled in our execution thread. The aim of the callback is to do whatever we want to do as a response of the I/O operation (e.g.: consume the data received, confirm that an operation has been done succesfully, etc.).  
+  
 
 
 
