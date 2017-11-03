@@ -30,7 +30,7 @@ Let's illustrate this:
 
 - **Scenario 1** is neither concurrent nor parallel. It is just a sequential execution, each task at a time. 
 - **Scenarios 2**, **3** and **4** depicts concurrency implemented under different techniques:
-  - **Scenario 3** illustrates how concurrency can be achieved with a single core. Slices of each tasks are interleaved to keep progress on both. This is possible as long as tasks can be decomposed into simpler subtasks.
+  - **Scenario 3** illustrates how concurrency can be achieved with a single thread. Slices of each tasks are interleaved to keep progress on both. This is possible as long as tasks can be decomposed into simpler subtasks.
   - **Scenarios 2** and **4** draw parallelism using multiple threads where tasks or subtasks run in parallel at the exact same time. While threads of **2** are sequential, interleaving is applied in **4**.
 
 # CPU-Bound vs I/O-Bound Operations
@@ -86,16 +86,30 @@ Javascript is aimed to run on browsers, dealing with network requests and user i
 
 > **Javascript** uses an **asynchronous non-blocking model**, with a **single-threaded event loop** for its I/O interfaces.
 
-This approach makes Javascript highly concurrent 
-Of course Javascript supports CPU-bound tasks as well, but they can cause trouble if not handled correctly. 
-
-This can be summarized in the following figure:
+This approach makes Javascript highly concurrent with just one thread. Let's see, step by step, a typical asynchronous request in Javascript:
 
 
 
 
-## Summary
+
+
+
+### Javascript Event Loop
+
+### A quick note about parallelism in Javascript
+
+Eventhough Javascript has been designed with I/O in mind, it runs CPU intensive tasks as well. However, they can cause trouble if not handled correctly. 
+
+Many efforts have been lately made to solve this issue. As a result, [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) and [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) were recently introduced to implement parallelism. CPU intensive applications will benefit from these features by enabling heavy computations in the background, in different threads.
+
+
+
+
+
+
+# Summary
 - Concurrency makes tasks to progress simultaneously. Parallelism is a special case of concurrency where tasks execute literally at the same time.
 - These tasks can be CPU intensive. They are called CPU-bound operations and carry code to be run in our application. I/O-bound operations, on the other hand, do not execute in our programm flow but in an external context. They are intended to access devices or resources as servers, databases, files, etc. 
 - I/O-bound operations can be blocking or non-blocking, depending on whether the thread is locked or not, and synchronous or asynchronous, in case the execution is sequential or the response comes at some point in the future.
 - Javascript is intended for web applications with I/O-bound operations in mind. It uses an asynchronous non-blocking model with a single-threaded event loop. 
+- Parallelism is slowly starting to appear in Javascript.
