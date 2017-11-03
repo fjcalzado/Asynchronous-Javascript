@@ -10,14 +10,15 @@ First, we will review useful general ideas to better understand what's behind as
 - [Concurrency & Parallelism](#concurrency--parallelism)
 - [CPU-Bound vs I/O-Bound Operations](#cpu-bound-vs-io-bound-operations)
 - [I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous](#io-flavors-blocking-vs-non-blocking--synchronous-vs-asynchronous)
-- [Javascript](#javascript)
+- [Javascript Model](#javascript-model)
+- [Summary](#summary)
 
 # Concurrency & Parallelism
 
 Concurrency and parallelism are related concepts, very often confused, with important differences between them. A simple definition would be:
 
-- `Concurrency`: two or more tasks make progress at the same time. 
-- `Parallelism`: tasks literally run simultaneously, at the exact same instant.
+- `Concurrency`: two or more tasks make progress simultaneously. 
+- `Parallelism`: tasks literally run at the same time, at the exact same instant.
 
 While concurrency is a much broader, general problem than parallelism, the later represents a specific case of concurrency where true simultaneity happens.
 
@@ -36,13 +37,15 @@ Let's illustrate this:
 
 So far we have seen tasks that consume CPU resources, they carry a workload (piece of code) to be executed in our application. These are called **CPU-bound** operations.
 
-Programs, however, may also consist in reading data from disk, accessing an external device or fetching some data over the network. All these input/output operations trigger requests that are attended outside our program execution context. Therefore, **I/O-bound** operations do not '*run*' or '*execute*' in our application domain.  
+Programs, however, may also consist in reading data from disk, accessing an external device or fetching some data over the network. All these input/output operations trigger requests that are attended outside our program execution context. Therefore, **I/O-bound** operations do not '*run*' or '*execute*' in our application domain<sup id="sfootnote1">[1](#tfootnote1)</sup>. 
 
 ![CPU-bound vs I/O-bound](src/png/cpu_io.png)
 
 Bound operations also implies bottleneck with the resource is bound to. Increasing CPU resources will improve CPU-bound operations performance, while a better I/O system will boost I/O-bound operations. 
 
 By nature, CPU-bound operations are synchronous, although interleaving or parallelism can be used to achieve concurrency. One interesting fact of I/O-bound operations is that they can be asynchronous, and, asynchrony is a very useful form of concurrency as we will see in the next section.
+
+<sup id="tfootnote1">[1](#sfootnote1)</sup> *How and where these operations take place is out of the scope of this guide*.
 
 # I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous
 
@@ -77,10 +80,22 @@ Combining these flavors, we can classify I/O operations by its nature:
   - I/O request returns immediately returns to avoid blocking.
   - A notification is sent once completed. Then, a function to process the response is scheduled to be run at some point in our execution flow.
 
-# Javascript 
+# Javascript Model
 
-Javascript is aimed to be run on browsers, dealing with network requests and user interactions, all at the same time. Therefore, Javascript has evolved to be good for I/O-bound applications. For that reason:
+Javascript is aimed to run on browsers, dealing with network requests and user interactions at the same time, while trying to keep UI responsive. Therefore, Javascript has been intentionally evolved to be good for I/O-bound workloads. For that reason:
 
-> Javascript uses an asynchronous non-blocking model, with a single-threaded event loop for its I/O interfaces.
+> **Javascript** uses an **asynchronous non-blocking model**, with a **single-threaded event loop** for its I/O interfaces.
+
+This approach makes Javascript highly concurrent 
+Of course Javascript supports CPU-bound tasks as well, but they can cause trouble if not handled correctly. 
 
 This can be summarized in the following figure:
+
+
+
+
+## Summary
+- Concurrency makes tasks to progress simultaneously. Parallelism is a special case of concurrency where tasks execute literally at the same time.
+- These tasks can be CPU intensive. They are called CPU-bound operations and carry code to be run in our application. I/O-bound operations, on the other hand, do not execute in our programm flow but in an external context. They are intended to access devices or resources as servers, databases, files, etc. 
+- I/O-bound operations can be blocking or non-blocking, depending on whether the thread is locked or not, and synchronous or asynchronous, in case the execution is sequential or the response comes at some point in the future.
+- Javascript is intended for web applications with I/O-bound operations in mind. It uses an asynchronous non-blocking model with a single-threaded event loop. 
