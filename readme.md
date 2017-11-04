@@ -124,7 +124,7 @@ What happens when we run a Javascript program? How responses to asynchronous cal
 
 So, while the queue is the storage of external notifications and its callbacks, the event loop is the mechanism to dispatch them. This mechanisms follows a synchronous fashion: each message is processed completely before any other message is processed. Callbacks will not be fired as soon as notified, they must wait in the queue for their turn. This waiting time will depend on the number of pending messages as well as the processing time for each one.
 
-Therefor, as we can imagine, the problem with the event loop is that if we keep pushing multiple messages to the queue and the call stack takes too long to finish running, we will end up delaying all the execution flow. On browsers, this means delaying renders and making the whole page seem slow.
+Therefore, as we can imagine, the problem with the event loop is that if we keep pushing multiple messages to the queue and the call stack takes too long to finish running, we will end up delaying all the execution flow. On browsers, this means delaying renders and making the whole page seem slow.
 
 
 <sup id="tfootnote2">[2](#sfootnote2)</sup> *What has been explained here is the theoretical model. Real implementation in Javascript engines and browsers may be heavily optimized*.
@@ -144,5 +144,6 @@ Many efforts have been lately made to solve this issue. As a result, [WebWorkers
 - Concurrency makes tasks to progress simultaneously. Parallelism is a special case of concurrency where tasks execute literally at the same time.
 - These tasks can be CPU intensive. They are called CPU-bound operations and carry code to be run in our application. I/O-bound operations, on the other hand, do not execute in our programm flow but in an external context. They are intended to access devices or resources as servers, databases, files, etc. 
 - I/O-bound operations can be blocking or non-blocking, depending on whether the thread is locked or not, and synchronous or asynchronous, in case the execution is sequential or the response comes at some point in the future.
-- Javascript is intended for web applications with I/O-bound operations in mind. It uses an asynchronous non-blocking model with a single-threaded event loop. 
+- Javascript is intended for web applications with I/O-bound operations in mind. It uses an asynchronous non-blocking model with a single-threaded event loop.
+- Event loop model allows to dispatch asynchronous notifications concurrently, but also can be exhausted and make application performance decrease if not understood correctly.
 - Parallelism is slowly starting to appear in Javascript.
