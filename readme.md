@@ -1,7 +1,7 @@
 ![Asynchronous Javascript Header](src/png/header.png)
 
 
-The goal of this guide is to explain asynchronous programming in Javascript with the help of clean and easy figures to grasp key concepts in a glimpse. 
+The goal of this guide is to explain asynchronous programming in Javascript with the help of simple figures to easily grasp key concepts in a glimpse. 
 
 First, we will review useful general ideas to better understand what's behind asynchronous programming. Then, we will move our focus to the specific Javascript scenario to verify how these concepts are applied. Finally, we will see the most common asynchronous patterns in Javascript through examples.
 
