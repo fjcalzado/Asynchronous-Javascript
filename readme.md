@@ -5,13 +5,20 @@ The goal of this guide is to explain asynchronous programming in Javascript with
 
 First, we will review useful general ideas to better understand what's behind asynchronous programming. Then, we will move our focus to the specific Javascript scenario to verify how these concepts are applied. Finally, we will see the most common asynchronous patterns in Javascript through examples.
 
+
+
 ## Table of Contents
 
 - [Concurrency & Parallelism](#concurrency--parallelism)
 - [CPU-Bound vs I/O-Bound Operations](#cpu-bound-vs-io-bound-operations)
 - [I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous](#io-flavors-blocking-vs-non-blocking--synchronous-vs-asynchronous)
 - [Javascript Model](#javascript-model)
+  - [Javascript Event Loop](#javascript-event-loop)
+  - [A quick note about Parallelism](#a-quick-note-about-parallelism)
 - [Summary](#summary)
+
+
+
 
 # Concurrency & Parallelism
 
@@ -33,6 +40,9 @@ Let's illustrate this:
   - **Scenario 3** illustrates how concurrency can be achieved with a single thread. Slices of each tasks are interleaved to keep progress on both. This is possible as long as tasks can be decomposed into simpler subtasks.
   - **Scenarios 2** and **4** draw parallelism using multiple threads where tasks or subtasks run in parallel at the exact same time. While threads of **2** are sequential, interleaving is applied in **4**.
 
+
+
+
 # CPU-Bound vs I/O-Bound Operations
 
 So far we have seen tasks that consume CPU resources, they carry a workload (piece of code) to be executed in our application. These are called **CPU-bound** operations.
@@ -46,6 +56,9 @@ Bound operations also implies bottleneck with the resource is bound to. Increasi
 By nature, CPU-bound operations are synchronous, although interleaving or parallelism can be used to achieve concurrency. One interesting fact of I/O-bound operations is that they can be asynchronous, and, asynchrony is a very useful form of concurrency as we will see in the next section.
 
 <sup id="tfootnote1">[1](#sfootnote1)</sup> *How and where these operations take place is out of the scope of this guide*.
+
+
+
 
 # I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous
 
@@ -80,25 +93,45 @@ Combining these flavors, we can classify I/O operations by its nature:
   - I/O request returns immediately returns to avoid blocking.
   - A notification is sent once completed. Then, a function to process the response is scheduled to be run at some point in our execution flow.
 
+
+
+
 # Javascript Model
 
 Javascript is aimed to run on browsers, dealing with network requests and user interactions at the same time, while trying to keep UI responsive. Therefore, Javascript has been intentionally evolved to be good for I/O-bound workloads. For that reason:
 
 > **Javascript** uses an **asynchronous non-blocking model**, with a **single-threaded event loop** for its I/O interfaces.
 
-This approach makes Javascript highly concurrent with just one thread. Let's see, step by step, a typical asynchronous request in Javascript:
+This approach makes Javascript highly concurrent with just one thread. A typical asynchronous request in Javascript can be depicted as follows:
 
-![Javascript asynchronous call](src/png/async_call_steps.png)
+![Javascript asynchronous call](src/png/async_call.png)
 
-  
+Step by step, an asynchronous I/O call can be summarized as:
+
+![Javascript asynchronous call steps](src/png/async_call_steps.png)
 
 
+## Javascript Event Loop
 
-### Javascript Event Loop
+What happens when we run a Javascript program? How responses to asynchronous calls are treated concurrently within our program? That is exactly what the event loop model<sup id="sfootnote2">[2](#tfootnote2)</sup> answers:
 
-### A quick note about parallelism in Javascript
+![Event Loop Model](src/png/event_loop_model.png)
 
-Eventhough Javascript has been designed with I/O in mind, it runs CPU intensive tasks as well. However, they can cause trouble if not handled correctly. 
+- Call Stack. Each function call enters the stack as a frame, reserving a block of memory for its arguments and local variables. Any other subsequent function call will create a new frame that will be pushed on top. Given that stack frames are also popped out from the top (LIFO, last in first out), inner function calls (in a nested hierarchy) will always be resolved first.
+- Heap. Large unestructured memory region to dynamically allocate objects. 
+- Queue. Whenever an external context notify an event to our application (like in the case of asynchronous operations), it is pushed to a list of messages pending to be executed, together with its corresponding callback. A callback is just a function to be executed as a response of an event.
+- Event Loop. When the call stack is emtpy, the next message in the queue is processed. The processing consists of calling the associated callback and thus creating an initial frame in the call stack. This initial frame may lead to subsequents frames and the message processing ends when the stack becomes empty again.
+
+So, while the queue is the storage of external notifications and its callbacks, the event loop is the mechanism to dispatch them. This mechanisms follows a synchronous fashion: each message is processed completely before any other message is processed. Callbacks will not be fired as soon as notified, they must wait in the queue for their turn. This waiting time will depend on the number of pending messages as well as the processing time for each one.
+
+Therefor, as we can imagine, the problem with the event loop is that if we keep pushing multiple messages to the queue and the call stack takes too long to finish running, we will end up delaying all the execution flow. On browsers, this means delaying renders and making the whole page seem slow.
+
+
+<sup id="tfootnote2">[2](#sfootnote2)</sup> *What has been explained here is the theoretical model. Real implementation in Javascript engines and browsers may be heavily optimized*.
+
+## A quick note about Parallelism
+
+Eventhough Javascript has been designed with I/O in mind, it runs CPU intensive tasks as well. However, they can cause trouble if not handled correctly. Any processing intensive task may end up blocking our whole code execution, as explained in the event loop section. 
 
 Many efforts have been lately made to solve this issue. As a result, [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) and [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) were recently introduced to implement parallelism. CPU intensive applications will benefit from these features by enabling heavy computations in the background, in different threads.
 
