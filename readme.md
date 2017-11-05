@@ -55,7 +55,7 @@ Bound operations also implies bottleneck with the resource is bound to. Increasi
 
 By nature, CPU-bound operations are synchronous, although interleaving or parallelism can be used to achieve concurrency. One interesting fact of I/O-bound operations is that they can be asynchronous, and, asynchrony is a very useful form of concurrency as we will see in the next section.
 
-<sup id="tfootnote1">[1](#sfootnote1)</sup> *How and where these operations take place is out of the scope of this guide*.
+<sup id="tfootnote1">[1](#sfootnote1)</sup> *How and where these operations take place is out of the scope of this guide. They are enabled through APIs implemented in the browsers, and in last instance, the OS itself*.
 
 
 
