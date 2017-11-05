@@ -92,8 +92,8 @@ Combining these flavors, we can classify I/O operations:
   - Calls returns immediately, thread not blocked. A *try later* approach may be needed.
   - The response is processed immediately when received.
 - `Asynchronous` `Non-Blocking` I/O: 
-  - I/O request returns immediately returns to avoid blocking.
-  - A notification is sent once completed. Then, a function to process the response is scheduled to be run at some point in our execution flow.
+  - I/O request returns immediately to avoid blocking.
+  - A notification is sent once the operatino is completed. Then, a function to process the response (callback) is scheduled to be run at some point in our execution flow.
 
 
 
