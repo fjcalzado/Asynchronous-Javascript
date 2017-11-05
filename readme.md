@@ -62,13 +62,15 @@ By nature, CPU-bound operations are synchronous, although interleaving or parall
 
 # I/O Flavors: Blocking vs. Non-blocking & Synchronous vs. Asynchronous
 
-This terms are not applied consistently in every scenario and it depends on the context. Many times they are used as synonyms or mixed up to refer to the same thing.
+This terms are not always applied consistently by every author and it depends on the context. Many times, they are used as synonyms or mixed up to refer to the same thing.
 
-A possible classification in the context of I/O would be better understood if we imagine I/O operations comprising two phases: **wait** for the device to be ready or the data to be available and then **execute** the operation itself, whatever is intended for: read, write, etc.
+A possible classification in the context of I/O would be better understood if we imagine I/O operations comprising two phases: 
+1. **Wait** for the device to be ready, I/O operation to be completed or the data to be available and then
+2. **Execute** the response itself, whatever is intended to do as a response or with the received data.
 
 Blocking vs Non-Blocking refers to how waiting time affects to our main program:
 
-- `Blocking`: A blocking call does not return control to the application until is completed. Thread is locked in the meantime by putting it to wait state.
+- `Blocking`: A blocking call does not return control to the application until is completed. Thread is locked by putting it to wait state.
 - `Non-Blocking`: A non-blocking call returns immediately with whatever result it has. In case it could be completed, it will return the desired data. Otherwise, if the operation could not be immediately satisfied, it will provide an error code indicating something like '*Temporarily unavailable*', '*I am not ready*' or '*I will block. Please, postpone the call*'. It is implied that some sort of polling is done to complete the job or to place a new request in a better moment.
 
 ![Blocking vs Non Blocking](src/png/blocking_non_blocking.png)
