@@ -47,7 +47,7 @@ Let's illustrate this:
 
 So far we have seen tasks that consume CPU resources, they carry a workload (piece of code) to be executed in our application. These are called **CPU-bound** operations.
 
-Programs, however, may also consist in reading data from disk, accessing an external device or fetching some data over the network. All these input/output operations trigger requests that are attended outside our program execution context. Therefore, **I/O-bound** operations do not '*run*' or '*execute*' in our application domain<sup id="sfootnote1">[1](#tfootnote1)</sup>. 
+Programs, however, may also consist in reading data from disk, accessing an external database or fetching some data over the network. All these input/output operations trigger requests that are attended outside our program execution context. Therefore, **I/O-bound** operations do not '*run*' or '*execute*' in our application domain<sup id="sfootnote1">[1](#tfootnote1)</sup>. 
 
 ![CPU-bound vs I/O-bound](src/png/cpu_io.png)
 
