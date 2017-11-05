@@ -36,7 +36,7 @@ Let's illustrate this:
 ![Concurrency Scenarios](src/png/concurrency.png)
 
 - **Scenario 1** is neither concurrent nor parallel. It is just a sequential execution, each task at a time. 
-- **Scenarios 2**, **3** and **4** depicts concurrency implemented under different techniques:
+- **Scenarios 2**, **3** and **4** depict concurrency implemented under different techniques:
   - **Scenario 3** illustrates how concurrency can be achieved with a single thread. Slices of each tasks are interleaved to keep progress on both. This is possible as long as tasks can be decomposed into simpler subtasks.
   - **Scenarios 2** and **4** draw parallelism using multiple threads where tasks or subtasks run in parallel at the exact same time. While threads of **2** are sequential, interleaving is applied in **4**.
 
