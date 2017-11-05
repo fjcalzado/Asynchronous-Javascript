@@ -75,15 +75,15 @@ Blocking vs Non-Blocking refers to how waiting time affects to our main program:
 
 ![Blocking vs Non Blocking](src/png/blocking_non_blocking.png)
 
-While synchronous vs asynchronous determine when execution takes place:
+While synchronous vs asynchronous determine when does our response take place:
 
-- `Synchronous`: blocking and synchronous are used as synonyms many times, meaning that the whole I/O operation is executed sequentially and therefore we must wait for it to complete.
+- `Synchronous`: blocking and synchronous are used as synonyms many times, meaning that the whole I/O operation is executed sequentially and therefore we must wait for it to complete to process the result.
 - `Asynchronous`: the completion of the operation is later signaled using a specific mechanism such as a registered callback, promise or event (they will be explained later) which make possible to defer the processing of the response. Also, this is non-blocking by nature, as the I/O call returns immediately.
 
 ![Synchronous vs Asynchronous](src/png/sync_async.png)
 
 
-Combining these flavors, we can classify I/O operations by its nature:
+Combining these flavors, we can classify I/O operations:
 
 - `Synchronous` `Blocking` I/O. The whole operation is done in one shot blocking the execution flow:
   - The thread is blocked while waiting.
