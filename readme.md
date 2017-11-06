@@ -119,13 +119,13 @@ What happens when we run a Javascript program? How responses to asynchronous cal
 
 ![Event Loop Model](src/png/event_loop_model.png)
 
-+ #### Call Stack 
++ ### Call Stack 
   It basically keeps track of where in the programm we are. Each function call enters the stack as a frame, reserving a block of memory for its arguments and local variables. If we step into a function, a new frame is put on top of the stack. If we return from a function, its frame is popped out from the top (LIFO, last in first out). This way, inner calls are stacked on top of its parent. The stack on the top will be attended first.
-+ #### Heap
++ ### Heap
   Large unestructured memory region to dynamically allocate objects. It is shared by whole program and a *garbage collector* will make sure to free what is not used anymore. 
-+ #### Queue
++ ### Queue
   Whenever an external context notify an event to our application (like in the case of asynchronous operations), it is pushed to a list of messages pending to be executed, together with its corresponding callback. A callback is just a function to be executed as a response of an event.
-+ #### Event Loop
++ ### Event Loop
   When the call stack is emtpy, the next message in the queue is processed. The processing consists of calling the associated callback and thus creating an initial frame in the call stack. This initial frame may lead to subsequents frames and the message processing ends when the stack becomes empty again.
 
 
