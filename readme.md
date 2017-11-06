@@ -217,6 +217,10 @@ setTimeout(function(){
 This is a typical drawback of the callbacks, appart from the indentation, it reduces readability and makes code hard to maintain.
 
 
+## Promises
+
+It represents the result of an asynchronous operation, that might be available now or in a future.
+
 
 # Summary
 - Concurrency makes tasks to progress simultaneously. Parallelism is a special case of concurrency where tasks are executed literally at the same time.
