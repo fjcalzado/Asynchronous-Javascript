@@ -15,6 +15,7 @@ Explanations are supported by simple drawings to easily grasp concepts in a glim
 - [Javascript Model](#javascript-model)
   - [Javascript Event Loop](#javascript-event-loop)
   - [A quick note about Parallelism](#a-quick-note-about-parallelism)
+- [Asynchronous Patterns in Javascript](#asynchronous-patterns-in-javascript)
 - [Summary](#summary)
 
 
@@ -154,11 +155,52 @@ Many efforts have been lately made to solve this issue. As a result, [WebWorkers
 
 
 
+# Asynchronous Patterns in Javascript
+
+
+## Callbacks
+
+Callbacks are the fundamental foundation for Javascript to work asynchronously. Actually, more sofisticated asynchronous pattern are based on callbacks, they just add syntactic sugar to handle them more conveniently. 
+
+A callback is just a function passed as an argument into another function which will be invoked to complete some kind of action. In our asynchronous context, a callback represents the '*what do you want to do after your asynchronous operation finishes?*'. Then, it is the piece of code to be executed once the asynchronous operation has signaled its completion. The callback will be run at some future point thanks to the event loop mechanism seen before. 
+
+Look at this simple asynchronous code using a callback:
+
+```js
+setTimeout(function(){
+  console.log("I am a delayed Hello World!");
+}, 1000)
+```
+Or if you prefer, the callback can be a named function instead of anonymous:
+
+```js
+const myCallback = () => console.log("I am a delayed Hello World!");
+setTimeout(myCallback, 1000);
+```
+
+`setTimeout` is an asynchronous function that will schedule a callback to be run after a certain minimun amount of time has passed (1 second in the example above). It just fires a timer under the hood and register the callback to be run once the timer ends. In short, it delays an execution for a **minimum** time.
+
+It is important to note that, even if we setup the delay to be 0, it does not mean the callback is run immediately. Check the following example:
+
+```js
+setTimeout(function(){
+  console.log("Expected to be logged immediately");
+}, 0);
+console.log("Surprise!");
+
+// Surprise!
+// Expected to be logged immediately
+```
+Remember, the callback is added to the event loop queue and it must wait for the first tick to happen. However, the stack is busy running `console.log()`. Our callback will be dispatched once the stack is empty, which in practice means, once `Surprise!` has been logged.
+
+
+  
+
 
 
 
 # Summary
-- Concurrency makes tasks to progress simultaneously. Parallelism is a special case of concurrency where tasks execute literally at the same time.
+- Concurrency makes tasks to progress simultaneously. Parallelism is a special case of concurrency where tasks are executed literally at the same time.
 - These tasks can be CPU intensive. They are called CPU-bound operations and carry code to be run in our application. I/O-bound operations, on the other hand, do not execute in our programm flow but in an external context. They are intended to access devices or resources as servers, databases, files, etc. 
 - I/O-bound operations can be blocking or non-blocking, depending on whether the thread is locked or not, and synchronous or asynchronous, in case the execution is sequential or the response comes at some point in the future.
 - Javascript is intended for web applications with I/O-bound operations in mind. It uses an asynchronous non-blocking model with a single-threaded event loop.
