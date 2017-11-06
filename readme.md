@@ -120,25 +120,30 @@ What happens when we run a Javascript program? How responses to asynchronous cal
 ![Event Loop Model](src/png/event_loop_model.png)
 
 + ### Call Stack 
-  It basically keeps track of where in the programm we are. Each function call enters the stack as a frame, reserving a block of memory for its arguments and local variables. If we step into a function, a new frame is put on top of the stack. If we return from a function, its frame is popped out from the top (LIFO, last in first out). This way, inner calls are stacked on top of its parent. The stack on the top will be attended first.
+  It basically keeps track of where in the programm we are. Each function call enters the stack as a frame, reserving a block of memory for its arguments and local variables. If we step into a function in our program, a new frame is put on top of the stack. If we return from a function, its frame is popped out from the top. Then, it works in a LIFO fashion: last in, first out. This way, inner calls are stacked on top of its parent. The frame on the top will be attended first.
 + ### Heap
   Large unestructured memory region to dynamically allocate objects. It is shared by whole program and a *garbage collector* will make sure to free what is not used anymore. 
 + ### Queue
   Whenever an external context notify an event to our application (like in the case of asynchronous operations), it is pushed to a list of messages pending to be executed, together with its corresponding callback. A callback is just a function to be executed as a response of an event.
 + ### Event Loop
-  When the call stack is emtpy, the next message in the queue is processed. The processing consists of calling the associated callback and thus creating an initial frame in the call stack. This initial frame may lead to subsequents frames and the message processing ends when the stack becomes empty again.
+  When the call stack is emtpy, the next message in the queue is processed, this is called a '*tick*'. The processing of a message consists of calling the associated callback, and thus, creating an initial frame in the call stack. This initial frame may lead to subsequents frames. The message processing ends when the stack becomes empty again. This is called '*run-to-completion*'.
 
 
-So, while the queue is the storage of external notifications and its callbacks, the event loop is the mechanism to dispatch them. This mechanism follows a synchronous fashion: each message is processed completely before any other message is processed. Callbacks will not be fired as soon as notified, they must wait in the queue for their turn. This waiting time will depend on the number of pending messages as well as the processing time for each one.
+So, while the queue is the storage of external notifications and its callbacks, the event loop is the mechanism to dispatch them. This mechanism follows a synchronous fashion: each message is processed completely before any other message is processed. **Callbacks will not be fired as soon as notified**, they must wait in the queue for their turn. This waiting time will depend on the number of pending messages as well as the processing time for each one.
 
-Therefore, as we can imagine, the problem with the event loop is that if we keep pushing multiple messages to the queue and the call stack takes too long to finish running, we will end up delaying all the execution flow. On browsers, this means delaying renders and making the whole page seem slow.
+As we can imagine, event loop mechanism can lead to issues under the following scenarios:
+- Call stack don't get empty (heavy processing) and thus, it prevents the event loop to tick.
+- Multiple messages being pushed to the queue at a higher rate they are processed. 
+- A message callback takes too long to finish running and stops event loop ticks. 
+
+Most probably, **bottlenecks** are a mix of the three causes and they will end up **delaying all the execution flow**. On browsers, this means delaying renders and making the whole page seem slow. That is why the best tip in this regard is to **keep callbacks light**. Avoid code that makes your program starving of resources, let event loop to tick nicely.
 
 
 <sup id="tfootnote2">[2](#sfootnote2)</sup> *What has been explained here is the theoretical model. Real implementation in Javascript engines and browsers may be heavily optimized*.
 
 ## A quick note about Parallelism
 
-Eventhough Javascript has been designed with I/O in mind, it runs CPU intensive tasks as well. However, they can cause trouble if not handled correctly. Any processing intensive task may end up blocking our whole code execution, as explained in the event loop section. 
+Eventhough Javascript has been designed with I/O in mind, it runs CPU intensive tasks as well. However, they can cause trouble if not handled correctly. Any processing intensive task may end up blocking our whole code execution, as explained in the previous section. 
 
 Many efforts have been lately made to solve this issue. As a result, [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) and [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) were recently introduced to implement parallelism. CPU intensive applications will benefit from these features by enabling heavy operations to be computed in the background, in different threads.
 
@@ -152,5 +157,5 @@ Many efforts have been lately made to solve this issue. As a result, [WebWorkers
 - These tasks can be CPU intensive. They are called CPU-bound operations and carry code to be run in our application. I/O-bound operations, on the other hand, do not execute in our programm flow but in an external context. They are intended to access devices or resources as servers, databases, files, etc. 
 - I/O-bound operations can be blocking or non-blocking, depending on whether the thread is locked or not, and synchronous or asynchronous, in case the execution is sequential or the response comes at some point in the future.
 - Javascript is intended for web applications with I/O-bound operations in mind. It uses an asynchronous non-blocking model with a single-threaded event loop.
-- Event loop model allows to dispatch asynchronous notifications concurrently, but also can be exhausted and make application performance decrease if not understood correctly.
-- Parallelism is slowly starting to appear in Javascript.
+- Event loop model allows to dispatch asynchronous notifications concurrently, but also can be exhausted and make application performance decrease if not understood correctly. Keep callbacks light.
+- For those CPU intensive tasks, parallelism is slowly starting to appear in Javascript.
