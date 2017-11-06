@@ -16,6 +16,7 @@ Explanations are supported by simple drawings to easily grasp concepts in a glim
   - [Javascript Event Loop](#javascript-event-loop)
   - [A quick note about Parallelism](#a-quick-note-about-parallelism)
 - [Asynchronous Patterns in Javascript](#asynchronous-patterns-in-javascript)
+  - [Callbacks](#callbacks)
 - [Summary](#summary)
 
 
