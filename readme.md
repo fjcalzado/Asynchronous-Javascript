@@ -122,7 +122,7 @@ What happens when we run a Javascript program? How responses to asynchronous cal
 + ### Call Stack 
   It basically keeps track of where in the programm we are. Each function call enters the stack as a frame, reserving a block of memory for its arguments and local variables. If we step into a function in our program, a new frame is put on top of the stack. If we return from a function, its frame is popped out from the top. Then, it works in a LIFO fashion: last in, first out. This way, inner calls are stacked on top of its parent. The frame on the top will be attended first.
 
-  ![Call Stack animation](src/gif/call_stack_animated.gif)
+![Call Stack animation](src/gif/call_stack_animated.gif)
 
 + ### Heap
   Large unestructured memory region to dynamically allocate objects. It is shared by whole program and a *garbage collector* will make sure to free what is not used anymore. 
@@ -130,6 +130,8 @@ What happens when we run a Javascript program? How responses to asynchronous cal
   Whenever an external context notify an event to our application (like in the case of asynchronous operations), it is pushed to a list of messages pending to be executed, together with its corresponding callback. A callback is just a function to be executed as a response of an event.
 + ### Event Loop
   When the call stack is emtpy, the next message in the queue is processed, this is called a '*tick*'. The processing of a message consists of calling the associated callback, and thus, creating an initial frame in the call stack. This initial frame may lead to subsequents frames. The message processing ends when the stack becomes empty again. This is called '*run-to-completion*'.
+
+![Event Loop Tick animation](src/gif/event_loop_tick_animated.gif)
 
 
 So, while the queue is the storage of external notifications and its callbacks, the event loop is the mechanism to dispatch them. This mechanism follows a synchronous fashion: each message is processed completely before any other message is processed. **Callbacks will not be fired as soon as notified**, they must wait in the queue for their turn. This waiting time will depend on the number of pending messages as well as the processing time for each one.
