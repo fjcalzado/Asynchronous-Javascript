@@ -56,6 +56,10 @@ IMPORTANT: How JS implements concurrency via its event-loop model
 
 
 
+# Event loop queue vs jobs queue for promises
+
+https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
+
 
 
 
