@@ -161,9 +161,9 @@ Many efforts have been lately made to solve this issue. As a result, [WebWorkers
 
 ## Callbacks
 
-Callbacks are the fundamental foundation for Javascript to work asynchronously. Actually, more sofisticated asynchronous pattern are based on callbacks, they just add syntactic sugar to handle them more conveniently. 
+Callbacks are the fundamental foundation for Javascript to work asynchronously. Actually, more sofisticated asynchronous patterns are based on callbacks, they just add syntactic sugar to handle them more conveniently. 
 
-A callback is just a function passed as an argument into another function which will be invoked to complete some kind of action. In our asynchronous context, a callback represents the '*what do you want to do after your asynchronous operation finishes?*'. Then, it is the piece of code to be executed once the asynchronous operation has signaled its completion. The callback will be run at some future point thanks to the event loop mechanism seen before. 
+A callback is just a function passed as an argument into another function, which will be invoked to complete some kind of action. In our asynchronous context, a callback represents the '*what do you want to do after your asynchronous operation finishes?*'. Then, it is the piece of code to be executed once the asynchronous operation has signaled its completion. The callback will be run at some future point thanks to the event loop mechanism seen before. 
 
 Look at this simple asynchronous code using a callback:
 
@@ -192,11 +192,29 @@ console.log("Surprise!");
 // Surprise!
 // Expected to be logged immediately
 ```
-Remember, the callback is added to the event loop queue and it must wait for the first tick to happen. However, the stack is busy running `console.log()`. Our callback will be dispatched once the stack is empty, which in practice means, once `Surprise!` has been logged.
+Remember, the callback is added to the event loop queue and it must wait for the first tick to happen. However, the stack is busy running `console.log("Surprise!")`. Our callback will be dispatched once the stack is empty, which in practice means, once `Surprise!` has been logged.
 
+#### Callback Hell
 
+Callbacks also launch asynchronous calls, so they can be nested as desired. Our code can end up looking like this:
+
+```js
+setTimeout(function(){
+  console.log("Stage 1 Completed");
+  setTimeout(function(){
+    console.log("Stage 2 Completed");
+    setTimeout(function(){
+      console.log("Stage 3 Completed");
+      setTimeout(function(){
+        console.log("Stage 4 Completed");
+        // This can continue forever.
+      }, 4000);
+    }, 3000);
+  }, 2000);
+}, 1000);
+```
   
-
+This is a typical drawback of the callbacks, appart from the indentation, it reduces readability and makes code hard to maintain.
 
 
 
