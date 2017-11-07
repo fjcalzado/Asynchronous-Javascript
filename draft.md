@@ -62,37 +62,3 @@ https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
 https://github.com/nodejs/node/issues/2736
 https://stackoverflow.com/questions/36870467/what-is-the-order-of-execution-in-javascript-promises
 https://stackoverflow.com/questions/40880416/what-is-the-difference-between-event-loop-queue-and-job-queue
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# DEPRECATED
-
-
-## Synchronous vs Blocking vs Asynchronous vs Non-blocking
-
-**Synchronous** and **blocking** can be considered synonyms in practical terms: 
-- `Synchronous` / `Blocking`: sequential execution that pontentially may block the thread due to CPU intensive processing or waiting time.
-
-While **synchronous** stresses the idea that an order must be followed and each task must wait to the previous one to complete, **blocking** emphasizes the capacity to slow down the execution flow.
-
-![Synchronous / Blocking](src/png/sync_blocking.png)
-
-On the other hand, **asynchronous** and **non-blocking** slightly differ depending on the context. Certainly, they are pretty similar concepts aimed to improve execution flow efficiency, they use different mechanisms though:
-
-- `Non-Blocking`: A non-blocking call returns immediately with whatever result it has in case it could be completed. Otherwise, if the operation could not be immediately satisfied, it will provide an error code indicating something like '*hey, I am not ready*' or '*hey, I will block, postpone the call*'. It is implied that some sort of polling is done in that case to complete the job or to place a new request in a better moment.
-- `Asynchronous`: An asynchronous call will also return immediately. It just invokes a task that will keep progressing in the background and will signal its completion using a specific mechanism such as a registered callback, promise or event (they will be explained later).

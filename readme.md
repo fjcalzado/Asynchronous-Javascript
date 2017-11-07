@@ -219,7 +219,77 @@ This is a typical drawback of the callbacks, appart from the indentation, it red
 
 ## Promises
 
-It represents the result of an asynchronous operation, that might be available now or in a future.
+A promise is an object that **represents the result of an asynchronous operation**. It might be available **now** or in the **future**. They are based on callbacks but add some sugar on top for a prettier syntax. Promises are special in terms of asynchrony, they add a new level of priority as we will study below.
+
+### Consuming Promises
+
+When calling an asynchronous function implemented with this pattern, it will immediately return a promise as a guarantee that the asynchronous operation will end up, either successfully or with failure. Once we have the promise object, we register a couple of callbacks: one to tell the promise '*what to do in case everything goes ok*' (the promise resolves) and another for '*what to do if it fails*' (the promise rejects). 
+
+So essentially, a promise is a returned object to which we can **attach callbacks, instead of passing callbacks into a function**. The way we setup those two callbacks is by using `.then(resolveCallback, rejectCallback)`. In promise terminology we say a promise is *resolved* successfully or *rejected* with failure. Take a look at the following example:
+
+```js
+const currentURL = document.URL.toString();
+const promise = fetch(currentURL);
+promise.then(result => console.log(result),
+  e => console.log(`Error catched:  ${e}`));
+```
+
+It is more readable in this short fashion:
+
+```js
+fetch(document.URL.toString())
+  .then(result => console.log(result),
+    e => console.log(`Error catched:  ${e}`));
+```
+
+In the example above, we ask the server to retrieve the current webpage using `fetch`, which is an asynchronous API returning a promise. We set it up with two callbacks, a resolve callback that will show the page through console if operation went successfully and a reject callback to simply log the error in case it fails.
+
+One interesting feature of promises is that they can be chained. It means that a call to `.then()` will return a new promise. This new promise will be resolved with the returned value of the first `then()`'s `resolveCallback`: 
+
+```js
+fetch(document.URL.toString())
+  .then(result => {
+    console.log(result);
+    return "First Then";
+  },
+    e => console.log(`Error catched:  ${e}`))
+  .then(result => console.log(`Second Then after ${result}: Webpage already logged`),
+    e => console.log(`Error catched:  ${e}`));
+``` 
+
+In order to avoid verbosity, we can express chained promises in a shorter way by using `catch(rejectCallback)` to catch whatever rejection occurs in any of the chained promises. `catch(rejectCallback)` is an equivalent form of `.then(null, rejectCallback)`. Only one `catch()` statement is needed at the end of a promise chain:
+
+```js
+fetch(document.URL.toString())
+  .then(result => console.log(result))
+  .then(() => console.log(`Fetch completed and webpage logged`))
+  .catch(e => console.log(`Error catched:  ${e}`));
+```
+
+### Creating Promises 
+
+A promise is created by instantiating a new Promise object. Upon a promise creation, a callback must be specified containing what the promise should do. This callback is passed two arguments: `resolveCallback` and `rejectCallback`. These are the two callbacks already seen before, that we setup when consuming the promise. This way, as a creators of the promise, we can call them when needed to signal that the promise has been completed successfully or with failure. Check the following example:
+
+
+Promises are very useful to wrap up old asynchronous APIs to add a prettier syntax where a promise is returned instead of passing callbacks the old way:
+
+```js
+const delay = time => new Promise(resolveCallback => setTimeout(resolveCallback, time));
+
+delay(3000)
+  .then(() => console.log(`This is a delay of at least 3 seconds`))
+  .catch(() => console.log(`Delay failed`));
+```
+
+
+### Asynchrony in Promises
+
+Treating promises with the same priority as the rest of asynchronous messages will unnecessarily delay the execution of its callbacks. They would get lost among other messages such as rendering. This situation may lead to break interaction with important APIs that your web application relies on. ECMAScript describes the use of a special queue, called **microtask queue**, with higher priority dedicated to promises callbacks.
+
+The idea behind a second *high priority* queue is that every promise callback is enlisted there, so when a new event loop tick occurs, the microtask queue is attended first. This way, promises will be run later, but as soon as possible.
+
+That is the reason why the timing of the following example is not the expected if we would only consider a single queue:
+
 
 
 # Summary
@@ -229,3 +299,5 @@ It represents the result of an asynchronous operation, that might be available n
 - Javascript is intended for web applications with I/O-bound operations in mind. It uses an asynchronous non-blocking model with a single-threaded event loop.
 - Event loop model allows to dispatch asynchronous notifications concurrently, but also can be exhausted and make application performance decrease if not understood correctly. Keep callbacks light.
 - For those CPU intensive tasks, parallelism is slowly starting to appear in Javascript.
+- Most common asynchronous patterns are:
+  - Callback. Function to be run when an asynchronous operation ends.
