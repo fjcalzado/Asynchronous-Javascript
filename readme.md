@@ -18,7 +18,7 @@ Explanations are supported by simple drawings to easily grasp concepts in a glim
 - [Asynchronous Patterns in Javascript](#asynchronous-patterns-in-javascript)
   - [Callbacks](#callbacks)
   - [Promises](#promises)
-  - [Async / Await](#async-await)
+  - [Async / Await](#async--await)
 - [Summary](#summary)
 
 
