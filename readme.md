@@ -17,6 +17,8 @@ Explanations are supported by simple drawings to easily grasp concepts in a glim
   - [A quick note about Parallelism](#a-quick-note-about-parallelism)
 - [Asynchronous Patterns in Javascript](#asynchronous-patterns-in-javascript)
   - [Callbacks](#callbacks)
+  - [Promises](#promises)
+  - [Async / Await](#async-await)
 - [Summary](#summary)
 
 
@@ -291,14 +293,14 @@ And a simple example like follows:
 const checkServer = (url) => {
   return new Promise((resolve, reject) => { 
     fetch(url)
-      .then(() => resolve(`Server is ON`))
-      .catch(() => reject(`Server is OFF`));
+      .then(response => resolve(`Server is ${response.status === 200 ? "OK" : "NOT OK"}`))
+      .catch(() => reject(`Error fetching URL`));
   });
 }
 
 checkServer(document.URL.toString())
   .then(result => console.log(result))
-  .catch(e => console.log(e))
+  .catch(e => console.log(e));
 
 ```
 
@@ -334,7 +336,80 @@ Promise.resolve().then(() => console.log("2"));
 
 Promise callback `console.log("2")` has higher priority than old-style API callback `console.log("1")` thanks to the microtask queue.
 
+
 ## Async / Await
+
+Promises were a turning point in Javascript as they introduced an overall improvement over callbacks and a better handling of asynchronous tasks. However, they can become messy as they require more and more `.then()`'s. Keywords `async` and `await` come into play to simplify promises handling. They add pure syntactic sugar to make promises even more friendly, write simpler code, reduce nesting and improve debugging traceability. But remember, `async \ await` and promises are the same under the hood.
+
+Label `async` declares a function as asynchronous and indicates that a promise will be automatically returned. We can declare as `async` either anonymous functions, named functions or arrow functions. On the other hand, `await` must be used within an `async` declaration and it automatically waits (asynchronously and non-blocking) for a promise to resolve. Let's illustrate it with an example:
+
+```js
+const checkServerWithSugar = async (url) => {
+  const response = await fetch(url);
+  return `Server is ${response.status === 200 ? "OK" : "NOT OK"}`;
+}
+
+checkServerWithSugar(document.URL.toString())
+  .then(result => console.log(result));
+
+```
+
+Compare this improved example wit the original version of `checkServer` seen in [Promises](#promises) section, they are equivalent. Now, however, `await` statement will take care of the promise returned by `fetch` for you. Let's call it the fetch promise. So, the `resolveCallback` for the fetch promise will automatically be setup with the pending tasks in our `async` function: the assignment of the response and the second line that returns. Then, the rest of the `async` function will be executed asynchronously once the fetch promise is resolved. As a result, we can write our code inline and sequentially without the need for callbacks.
+
+In the practice, this behaviour is equivalent to say that the `await` operator '*pauses the execution*' or '*waits for a promise*'. You may have read this definition before, but be careful, it suggests the wrong idea that `await` blocks or waits synchronously. 
+
+### Error handling
+
+If a promise operated by `await` rejects or an error is thrown within our `async` function, the promise returned by the `async` also rejects. In this case, we can just add a `.catch()` statement.
+
+```js
+checkServerWithSugar(document.URL.toString())
+  .then(result => console.log(result))
+  .catch(e => console.log(`Error Logged Outside: ${e}`));
+```
+
+In case we need to handle the error internal to the `async` function, we can `try / catch` the `await` statement like this:
+
+```js
+const checkServerWithSugar = async (url) => {
+  try {
+    const response = await fetch(url);
+    return `Server is ${response.status === 200 ? "OK" : "NOT OK"}`;
+  } catch (e) {
+    throw `Extra info added. Original error: ${e}`;
+  }
+}
+
+checkServerWithSugar(document.URL.toString())
+  .then(result => console.log(result))
+  .catch(e => console.log(`Error Logged Outside: ${e}`));
+```
+
+### Multiple awaits timing
+
+Most of the time you will want to avoid stacking `await`s, unless one depends on the other. Stacking `await`s is equivalent to launch a promise upon the resolution of another promise. Look at the following example:
+
+```js
+async function wait() {
+  await delay(500);
+  await delay(500);
+  return "At least 1 second has passed";
+};
+``` 
+
+Only when the first `delay()` has been resolved, will the second be launched. Stacking `await`s mean synchronous waiting between `await`s. However, if we do it like this:
+
+```js
+async function wait() {
+  const d1 = delay(500);
+  const d2 = delay(500);
+  await d1;
+  await d2;
+  return "At least 500 ms. has passed";
+};
+```
+
+This is a much better approach. Both `delay()` calls are fired and we just wait for their resolution. By doing so, we allow the asynchronous `delay()` calls to happen concurrently.
 
 
 
@@ -347,3 +422,5 @@ Promise callback `console.log("2")` has higher priority than old-style API callb
 - For those CPU intensive tasks, parallelism is slowly starting to appear in Javascript.
 - Most common asynchronous patterns are:
   - Callback. Function to be run when an asynchronous operation ends.
+  - Promise. It represents the result of an asynchronous operation. It can be setup with 2 callbacks to react upon its resolution or failure.
+  - Async/Await. Syntactic sugar over promises to handle them in a simpler way. Async marks a function asynchronous while await handles the resolution of a promise automatically.

@@ -83,14 +83,14 @@ const myAsyncFunction = () => {
 const checkServer = (url) => {
   return new Promise((resolve, reject) => { 
     fetch(url)
-      .then(() => resolve(`Server is ON`))
-      .catch(() => reject(`Server is OFF`));
+      .then(response => resolve(`Server is ${response.status === 200 ? "OK" : "NOT OK"}`))
+      .catch(() => reject(`Error fetching URL`));
   });
 }
 
 checkServer(document.URL.toString())
   .then(result => console.log(result))
-  .catch(e => console.log(e))
+  .catch(e => console.log(e));
 
 // Creating a promise. Asynchronous API wrapping.
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
@@ -109,3 +109,47 @@ Promise.resolve().then(() => console.log(`2`));
 
 // 2
 // 1
+
+
+/**
+ * ASYNC AWAIT
+ */
+
+// Creating and consuming. Simple example.
+const checkServerWithSugar = async (url) => {
+  const response = await fetch(url);
+  return `Server is ${response.status === 200 ? "OK" : "NOT OK"}`;
+}
+
+checkServerWithSugar(document.URL.toString())
+  .then(result => console.log(result));
+
+// Creating and consuming. Simple example with error handling.
+const checkServerWithSugar = async (url) => {
+  try {
+    const response = await fetch(url);
+    return `Server is ${response.status === 200 ? "OK" : "NOT OK"}`;
+  } catch (e) {
+    throw e;
+  }
+}
+
+checkServerWithSugar(document.URL.toString())
+  .then(result => console.log(result))
+  .catch(e => console.log(`Error: ${e}`));
+
+// Stacking awaits. Synchronous.
+async function wait() {
+  await delay(500);
+  await delay(500);
+  return "At least 1 second has passed";
+};
+
+// Stacking awaits. Asynchronous.
+async function wait() {
+  const d1 = delay(500);
+  const d2 = delay(500);
+  await d1;
+  await d2;
+  return "At least 500 ms. has passed";
+};
