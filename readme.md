@@ -354,7 +354,7 @@ checkServerWithSugar(document.URL.toString())
 
 ```
 
-Compare this improved example wit the original version of `checkServer` seen in [Promises](#promises) section, they are equivalent. Now, however, `await` statement will take care of the promise returned by `fetch` for you. Let's call it the fetch promise. So, the `resolveCallback` for the fetch promise will automatically be setup with the pending tasks in our `async` function: the assignment of the response and the second line that returns. Then, the rest of the `async` function will be executed asynchronously once the fetch promise is resolved. As a result, we can write our code inline and sequentially without the need for callbacks.
+Compare this improved example with the original version of `checkServer` seen in [Promises](#promises) section, they are equivalent. Now, however, `await` statement will take care of the promise returned by `fetch` for you. Let's call it the fetch promise. So, the `resolveCallback` for the fetch promise will automatically be setup with the pending tasks in our `async` function: the assignment of the response and the second line that returns. Then, the rest of the `async` function will be executed asynchronously once the fetch promise is resolved. As a result, we can write our code inline and sequentially without the need for callbacks.
 
 In the practice, this behaviour is equivalent to say that the `await` operator '*pauses the execution*' or '*waits for a promise*'. You may have read this definition before, but be careful, it suggests the wrong idea that `await` blocks or waits synchronously. 
 
