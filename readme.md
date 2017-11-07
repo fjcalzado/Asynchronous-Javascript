@@ -268,8 +268,39 @@ fetch(document.URL.toString())
 
 ### Creating Promises 
 
-A promise is created by instantiating a new Promise object. Upon a promise creation, a callback must be specified containing what the promise should do. This callback is passed two arguments: `resolveCallback` and `rejectCallback`. These are the two callbacks already seen before, that we setup when consuming the promise. This way, as a creators of the promise, we can call them when needed to signal that the promise has been completed successfully or with failure. Check the following example:
+A promise is created by instantiating a new Promise object. Upon a promise creation, a callback must be specified containing what the promise should do. This callback is passed two arguments: `resolveCallback` and `rejectCallback`. These are the two callbacks already seen before, that we setup when consuming the promise. This way, it is up to the developer to manually call `resolveCallback`() and `rejectCallback()` when needed to signal that the promise has been completed successfully or with failure. A typical squeleton of a promise could be:
 
+```js
+const myAsyncFunction = () => {
+  return new Promise((resolve, reject) => {
+
+    // Do your task here (usually an async task) and then...
+
+    if ( /* successful condition */ ) {
+      resolve(`Success!`);
+    } else {
+      reject(`Failure!`);
+    }
+  });
+}
+```
+
+And a simple example like follows:
+
+```js
+const checkServer = (url) => {
+  return new Promise((resolve, reject) => { 
+    fetch(url)
+      .then(() => resolve(`Server is ON`))
+      .catch(() => reject(`Server is OFF`));
+  });
+}
+
+checkServer(document.URL.toString())
+  .then(result => console.log(result))
+  .catch(e => console.log(e))
+
+```
 
 Promises are very useful to wrap up old asynchronous APIs to add a prettier syntax where a promise is returned instead of passing callbacks the old way:
 
@@ -284,11 +315,26 @@ delay(3000)
 
 ### Asynchrony in Promises
 
-Treating promises with the same priority as the rest of asynchronous messages will unnecessarily delay the execution of its callbacks. They would get lost among other messages such as rendering. This situation may lead to break interaction with important APIs that your web application relies on. ECMAScript describes the use of a special queue, called **microtask queue**, with higher priority dedicated to promises callbacks.
+Treating promises with the same priority as the rest of asynchronous messages will unnecessarily delay the execution of its callbacks. They could '*get lost*' among other messages such as rendering in the event loop queue. This situation may lead to break interaction with important APIs that your web application relies on. ECMAScript describes the use of a special queue, called **microtask queue**, with higher priority dedicated to promises callbacks.
 
 The idea behind a second *high priority* queue is that every promise callback is enlisted there, so when a new event loop tick occurs, the microtask queue is attended first. This way, promises will be run later, but as soon as possible.
 
 That is the reason why the timing of the following example is not the expected if we would only consider a single queue:
+
+```js
+// Old-style async call
+setTimeout(() => console.log("1"), 0); 
+
+// Promise-like async call
+Promise.resolve().then(() => console.log("2"));
+
+// 2
+// 1
+```
+
+Promise callback `console.log("2")` has higher priority than old-style API callback `console.log("1")` thanks to the microtask queue.
+
+## Async / Await
 
 
 

@@ -51,9 +51,9 @@ fetch(document.URL.toString())
 // Consuming a promise. Chained.
 fetch(document.URL.toString())
   .then(result => {
-    console.log(result);
-    return "First Then";
-  },
+      console.log(result);
+      return "First Then";
+    },
     e => console.log(`Error catched:  ${e}`))
   .then(result => console.log(`Second Then after ${result}: Webpage already logged`),
     e => console.log(`Error catched:  ${e}`));
@@ -65,12 +65,47 @@ fetch(document.URL.toString())
   .catch(e => console.log(`Error catched:  ${e}`));
 
 
-// Creating a promise.
+// Creating a promise. Squeleton.
+const myAsyncFunction = () => {
+  return new Promise((resolve, reject) => {
 
+    // Do your task here (usually an async task) and then...
+
+    if ( /* successful condition */ ) {
+      resolve(`Success!`);
+    } else {
+      reject(`Failure!`);
+    }
+  });
+}
+
+// Creating a promise. Simple example.
+const checkServer = (url) => {
+  return new Promise((resolve, reject) => { 
+    fetch(url)
+      .then(() => resolve(`Server is ON`))
+      .catch(() => reject(`Server is OFF`));
+  });
+}
+
+checkServer(document.URL.toString())
+  .then(result => console.log(result))
+  .catch(e => console.log(e))
 
 // Creating a promise. Asynchronous API wrapping.
-const delay = time => new Promise(resolveCallback => setTimeout(resolveCallback, time));
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 delay(3000)
   .then(() => console.log(`This is a delay of at least 3 seconds`))
   .catch(() => console.log(`Delay failed`));
+
+
+// Promises timing.
+// Old-style async call
+setTimeout(() => console.log(`1`), 0); 
+
+// Promise-like async call
+Promise.resolve().then(() => console.log(`2`));
+
+// 2
+// 1
