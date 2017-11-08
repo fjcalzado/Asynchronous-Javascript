@@ -1,9 +1,10 @@
 ![Asynchronous Javascript Header](src/png/header.png)
 
 
-**Asynchrony** is one of the key features of Javascript. The goal of this guide is to go deeper into its building blocks and internals. By knowing how they work, you will be able to write better code and responsive apps. 
+Asynchrony is one of the key features of Javascript. The goal of this guide is to go deeper into its building blocks and internals. By knowing how they work, you will be able to write better code and responsive apps. 
 
-Explanations are supported by simple drawings to easily grasp concepts in a glimpse. First of all, we will review useful general ideas to better understand what's behind **asynchronous programming**. Then, we will move our focus to the specific **Javascript model** to verify how these concepts are applied. Finally, we will see the most common **asynchronous patterns** in Javascript through examples.
+Explanations are supported by simple drawings to easily grasp concepts in a glimpse. First of all, we will review useful general ideas to better understand what's behind asynchronous programming. Then, we will move our focus to the specific Javascript model to verify how these concepts are applied. Finally, we will see the most common asynchronous patterns in Javascript through examples.
+
 
 
 
@@ -28,8 +29,8 @@ Explanations are supported by simple drawings to easily grasp concepts in a glim
 
 Concurrency and parallelism are related concepts, very often confused, with important differences between them. A simple definition would be:
 
-- `Concurrency`: two or more tasks make progress simultaneously. 
-- `Parallelism`: tasks literally run at the same time, at the exact same instant.
+- **`Concurrency`**: two or more tasks make progress simultaneously. 
+- **`Parallelism`**: tasks literally run at the same time, at the exact same instant.
 
 While concurrency is a much broader, general problem than parallelism, the later represents a specific case of concurrency where true simultaneity happens.
 
@@ -49,15 +50,15 @@ Let's illustrate this:
 
 # CPU-Bound vs I/O-Bound Operations
 
-So far we have seen tasks that consume CPU resources, they carry a workload (piece of code) to be executed in our application. These are called **CPU-bound** operations.
+So far, we have seen tasks that consume CPU resources, they carry a workload (piece of code) to be executed in our application. These are called **CPU-bound** operations.
 
-Programs, however, may also consist in reading data from disk, accessing an external database or fetching some data over the network. All these input/output operations trigger requests that are attended outside our program execution context. Therefore, **I/O-bound** operations do not '*run*' or '*execute*' in our application domain<sup id="sfootnote1">[1](#tfootnote1)</sup>. 
+Programs, however, may also consist in reading files from disk, accessing an external database or fetching some data over the network. All these input/output operations trigger special requests that are attended outside our program execution context. Therefore, **I/O-bound** operations do not '*run*' or '*execute*' in our application domain<sup id="sfootnote1">[1](#tfootnote1)</sup>. 
 
 ![CPU-bound vs I/O-bound](src/png/cpu_io.png)
 
-Bound operations also implies bottleneck with the resource is bound to. Increasing CPU resources will improve CPU-bound operations performance, while a better I/O system will boost I/O-bound operations. 
+Bound operations also implies a bottleneck with the resource is bound to. Increasing CPU resources will improve CPU-bound operations performance, while a better I/O system will boost I/O-bound operations. 
 
-By nature, CPU-bound operations are synchronous, although interleaving or parallelism can be used to achieve concurrency. One interesting fact of I/O-bound operations is that they can be asynchronous, and, asynchrony is a very useful form of concurrency as we will see in the next section.
+By nature, CPU-bound operations are synchronous (sequential), although interleaving or parallelism can be used to achieve concurrency. One interesting fact of I/O-bound operations is that they can be asynchronous, and, asynchrony is a very useful form of concurrency as we will see in the next section.
 
 <sup id="tfootnote1">[1](#sfootnote1)</sup> *How and where these operations take place is out of the scope of this guide. They are enabled through APIs implemented in the browsers, and in last instance, the OS itself*.
 
@@ -70,19 +71,19 @@ This terms are not always applied consistently by every author and it depends on
 
 A possible classification in the context of I/O would be better understood if we imagine I/O operations comprising two phases: 
 1. **Wait** for the device to be ready, I/O operation to be completed or the data to be available and then
-2. **Execute** the response itself, whatever is intended to do as a response or with the received data.
+2. **Execute** the response itself, whatever is intended to be done as a response or with the received data.
 
 Blocking vs Non-Blocking refers to how waiting time affects to our main program:
 
-- `Blocking`: A blocking call does not return control to the application until is completed. Thread is locked by putting it to wait state.
-- `Non-Blocking`: A non-blocking call returns immediately with whatever result it has. In case it could be completed, it will return the desired data. Otherwise, if the operation could not be immediately satisfied, it will provide an error code indicating something like '*Temporarily unavailable*', '*I am not ready*' or '*I will block. Please, postpone the call*'. It is implied that some sort of polling is done to complete the job or to place a new request in a better moment.
+- **`Blocking`**: A blocking call does not return control to the application until is completed. Thread is locked by putting it to wait state.
+- **`Non-Blocking`**: A non-blocking call returns immediately with whatever result it has. In case it could be completed, it will return the desired data. Otherwise, if the operation could not be immediately satisfied, it will provide an error code indicating something like '*Temporarily unavailable*', '*I am not ready*' or '*I will block. Please, postpone the call*'. It is implied that some sort of polling is done to complete the job or to place a new request in a better moment.
 
 ![Blocking vs Non Blocking](src/png/blocking_non_blocking.png)
 
-While synchronous vs asynchronous determine when does our response take place:
+Synchronous vs asynchronous determine when our response takes place:
 
-- `Synchronous`: blocking and synchronous are used as synonyms many times, meaning that the whole I/O operation is executed sequentially and therefore we must wait for it to complete to process the result.
-- `Asynchronous`: the completion of the operation is later signaled using a specific mechanism such as a registered callback, promise or event (they will be explained later) which make possible to defer the processing of the response. Also, this is non-blocking by nature, as the I/O call returns immediately.
+- **`Synchronous`**: blocking and synchronous are used as synonyms many times, meaning that the whole I/O operation is executed sequentially and therefore we must wait for it to complete to process the result.
+- **`Asynchronous`**: the completion of the operation is later signaled using a specific mechanism such as a registered callback, promise or event (they will be explained later) which make possible to defer the processing of the response. Also, this is non-blocking by nature, as the I/O call returns immediately.
 
 ![Synchronous vs Asynchronous](src/png/sync_async.png)
 
@@ -97,7 +98,7 @@ Combining these flavors, we can classify I/O operations:
   - The response is processed immediately when received.
 - `Asynchronous` `Non-Blocking` I/O: 
   - I/O request returns immediately to avoid blocking.
-  - A notification is sent once the operatino is completed. Then, a function to process the response (callback) is scheduled to be run at some point in our execution flow.
+  - A notification is sent once the operation is completed. Then, a function to process the response (callback) is scheduled to be run at some point in our execution flow.
 
 
 
@@ -129,30 +130,32 @@ What happens when we run a Javascript program? How responses to asynchronous cal
 ![Call Stack animation](src/gif/call_stack_animated.gif)
 
 + ### Heap
-  Large unestructured memory region to dynamically allocate objects. It is shared by whole program and a *garbage collector* will make sure to free what is not used anymore. 
+  Large unestructured memory region to dynamically allocate objects. It is shared by the whole program and a *garbage collector* will make sure to free what is not used anymore. 
 + ### Queue
-  Whenever an external context notify an event to our application (like in the case of asynchronous operations), it is pushed to a list of messages pending to be executed, together with its corresponding callback. A callback is just a function to be executed as a response of an event.
+  Whenever an external context notify an event to our application (like in the case of asynchronous operations), it is pushed to a list of messages pending to be executed, together with its corresponding callback. A callback, in this context, can be understood as a function to be executed as a response of an event.
 + ### Event Loop
   When the call stack is emtpy, the next message in the queue is processed, this is called a '*tick*'. The processing of a message consists of calling the associated callback, and thus, creating an initial frame in the call stack. This initial frame may lead to subsequents frames. The message processing ends when the stack becomes empty again. This is called '*run-to-completion*'.
 
 ![Event Loop Tick animation](src/gif/event_loop_tick_animated.gif)
 
 
-So, while the queue is the storage of external notifications and its callbacks, the event loop is the mechanism to dispatch them. This mechanism follows a synchronous fashion: each message is processed completely before any other message is processed. **Callbacks will not be fired as soon as notified**, they must wait in the queue for their turn. This waiting time will depend on the number of pending messages as well as the processing time for each one.
+So, while **the queue is the storage of messages (notifications) and its callbacks**, **the event loop is the mechanism to dispatch them**. This mechanism follows a synchronous fashion: each message is processed completely before any other message starts its processing.
+
+One important thing to note is that **callbacks will not be fired as soon as the message reaches the queue**, they must wait in the queue for their turn. This waiting time will depend on the number of pending messages as well as the processing time for each one. Although this seems very obvious, it explains the reason why the timing of asynchronous operations is not exact, they are attended in best effort mode. 
 
 As we can imagine, event loop mechanism can lead to issues under the following scenarios:
 - Call stack don't get empty (heavy processing) and thus, it prevents the event loop to tick.
 - Multiple messages being pushed to the queue at a higher rate they are processed. 
 - A message callback takes too long to finish running and stops event loop ticks. 
 
-Most probably, **bottlenecks** are a mix of the three causes and they will end up **delaying all the execution flow**. On browsers, this means delaying renders and making the whole page seem slow. That is why the best tip in this regard is to **keep callbacks light**. Avoid code that makes your program starving of resources, let event loop to tick nicely.
+Most probably, **bottlenecks** are a mix of these 3 causes and they will end up **delaying the execution flow**. On browsers, this means delaying renders and making the whole page seem slow. That is why the best tip in this regard is to **keep callbacks as light as possible**. In general, avoid code that makes your program starving of resources, let the event loop to tick nicely.
 
 
-<sup id="tfootnote2">[2](#sfootnote2)</sup> *What has been explained here is the theoretical model. Real implementation in Javascript engines and browsers may be heavily optimized*.
+<sup id="tfootnote2">[2](#sfootnote2)</sup> *Event loop explained here is the theoretical model. Real implementation in Javascript engines and browsers may be heavily optimized*.
 
 ## A quick note about Parallelism
 
-Eventhough Javascript has been designed with I/O in mind, it runs CPU intensive tasks as well. However, they can cause trouble if not handled correctly. Any processing intensive task may end up blocking our whole code execution, as explained in the previous section. 
+Eventhough Javascript has been designed with I/O in mind, of course it runs CPU intensive tasks as well. However, they can cause trouble if not handled correctly. Any processing intensive task may end up blocking our whole code execution, as explained in the previous section. 
 
 Many efforts have been lately made to solve this issue. As a result, [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) and [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) were recently introduced to implement parallelism. CPU intensive applications will benefit from these features by enabling heavy operations to be computed in the background, in different threads.
 
@@ -163,9 +166,9 @@ Many efforts have been lately made to solve this issue. As a result, [WebWorkers
 
 ## Callbacks
 
-Callbacks are the fundamental foundation for Javascript to work asynchronously. Actually, more sofisticated asynchronous patterns are based on callbacks, they just add syntactic sugar to handle them more conveniently. 
+Callbacks are the fundamental foundation for Javascript to work asynchronously. Actually, the rest of asynchronous patterns are based on callbacks in one way or another, they just add syntactic sugar to handle them more conveniently. 
 
-A callback is just a function passed as an argument into another function, which will be invoked to complete some kind of action. In our asynchronous context, a callback represents the '*what do you want to do after your asynchronous operation finishes?*'. Then, it is the piece of code to be executed once the asynchronous operation has signaled its completion. The callback will be run at some future point thanks to the event loop mechanism seen before. 
+A callback is just **a function passed as an argument into another function**, which will be invoked to complete some kind of action. In our asynchronous context, a callback represents the '*what do you want to do after your asynchronous operation finishes?*'. Then, it is the piece of code to be executed once the asynchronous operation has signaled its completion. The callback will be run at some future point thanks to the event loop mechanism seen before. 
 
 Look at this simple asynchronous code using a callback:
 
@@ -174,14 +177,14 @@ setTimeout(function(){
   console.log("I am a delayed Hello World!");
 }, 1000)
 ```
-Or if you prefer, the callback can be a named function instead of anonymous:
+Or if you prefer, the callback can be assigned to a named variable instead of being anonymous:
 
 ```js
 const myCallback = () => console.log("I am a delayed Hello World!");
 setTimeout(myCallback, 1000);
 ```
 
-`setTimeout` is an asynchronous function that will schedule a callback to be run after a certain minimun amount of time has passed (1 second in the example above). It just fires a timer under the hood and register the callback to be run once the timer ends. In short, it delays an execution for a **minimum** time.
+`setTimeout` is an asynchronous function that will schedule a callback to be run after a certain minimun amount of time has passed (1 second in the example above). For that purpose, it just fires a timer under the hood (asynchronously, in an external context) and register the callback to be run once the timer ends. In short, it delays an execution for a **minimum** time.
 
 It is important to note that, even if we setup the delay to be 0, it does not mean the callback is run immediately. Check the following example:
 
@@ -198,7 +201,7 @@ Remember, the callback is added to the event loop queue and it must wait for the
 
 #### Callback Hell
 
-Callbacks also launch asynchronous calls, so they can be nested as desired. Our code can end up looking like this:
+Callbacks can also launch asynchronous calls, so they can be nested as desired. Our code can end up looking like this:
 
 ```js
 setTimeout(function(){
@@ -216,12 +219,12 @@ setTimeout(function(){
 }, 1000);
 ```
   
-This is a typical drawback of the callbacks, appart from the indentation, it reduces readability and makes code hard to maintain.
+This is a typical drawback of the callbacks, appart from the indentation, it reduces readability, makes code hard to maintain and adds **cyclomatic complexity**. This is also known as '*Pyramid of Doom*' or '*Hadouken*'.
 
 
 ## Promises
 
-A promise is an object that **represents the result of an asynchronous operation**. It might be available **now** or in the **future**. They are based on callbacks but add some sugar on top for a prettier syntax. Promises are special in terms of asynchrony, they add a new level of priority as we will study below.
+A promise is an object that **represents the result of an asynchronous operation**. It might be available **now** or in the **future**. They are based on callbacks but add some sugar on top for better handling and easier syntax. Promises are special in terms of asynchrony, they add a new level of priority as we will study below.
 
 ### Consuming Promises
 
@@ -259,7 +262,7 @@ fetch(document.URL.toString())
     e => console.log(`Error catched:  ${e}`));
 ``` 
 
-In order to avoid verbosity, we can express chained promises in a shorter way by using `catch(rejectCallback)` to catch whatever rejection occurs in any of the chained promises. `catch(rejectCallback)` is an equivalent form of `.then(null, rejectCallback)`. Only one `catch()` statement is needed at the end of a promise chain:
+In order to avoid verbosity, we can express chained promises in a shorter way by using `.catch(rejectCallback)` to catch whatever rejection occurs in any of the chained promises. `catch(rejectCallback)` is an equivalent form of `.then(null, rejectCallback)`. Only one `catch()` statement is needed at the end of a promise chain:
 
 ```js
 fetch(document.URL.toString())
@@ -270,7 +273,9 @@ fetch(document.URL.toString())
 
 ### Creating Promises 
 
-A promise is created by instantiating a new Promise object. Upon a promise creation, a callback must be specified containing what the promise should do. This callback is passed two arguments: `resolveCallback` and `rejectCallback`. These are the two callbacks already seen before, that we setup when consuming the promise. This way, it is up to the developer to manually call `resolveCallback`() and `rejectCallback()` when needed to signal that the promise has been completed successfully or with failure. A typical squeleton of a promise could be:
+A promise is created by instantiating a new Promise object. Upon a promise creation, a callback must be specified containing what the promise should do. This callback is passed two arguments: `resolveCallback` and `rejectCallback`. These are the two callbacks already seen before, that we setup when consuming the promise. This way, it is up to the developer to manually call `resolveCallback`() and `rejectCallback()` when needed to signal that the promise has been completed successfully or with failure.
+
+A typical squeleton of a promise could be:
 
 ```js
 const myAsyncFunction = () => {
@@ -339,9 +344,11 @@ Promise callback `console.log("2")` has higher priority than old-style API callb
 
 ## Async / Await
 
-Promises were a turning point in Javascript as they introduced an overall improvement over callbacks and a better handling of asynchronous tasks. However, they can become messy as they require more and more `.then()`'s. Keywords `async` and `await` come into play to simplify promises handling. They add pure syntactic sugar to make promises even more friendly, write simpler code, reduce nesting and improve debugging traceability. But remember, `async \ await` and promises are the same under the hood.
+Promises were a turning point in Javascript as they introduced an overall improvement over callbacks and a better handling of asynchronous tasks. However, they can become messy as they require more and more `.then()`'s. **Keywords `async` and `await` come into play to simplify promises handling**. They add pure syntactic sugar to make promises even more friendly, write simpler code, reduce nesting and improve debugging traceability. But remember, `async \ await` and promises are the same under the hood.
 
-Label `async` declares a function as asynchronous and indicates that a promise will be automatically returned. We can declare as `async` either anonymous functions, named functions or arrow functions. On the other hand, `await` must be used within an `async` declaration and it automatically waits (asynchronously and non-blocking) for a promise to resolve. Let's illustrate it with an example:
+Label `async` declares a function as asynchronous and indicates that a promise will be automatically returned. We can declare as `async` either anonymous functions, named functions or arrow functions. On the other hand, `await` must be used within an `async` declaration and it automatically waits (asynchronously and non-blocking) for a promise to resolve. 
+
+Let's illustrate it with an example:
 
 ```js
 const checkServerWithSugar = async (url) => {
@@ -356,7 +363,7 @@ checkServerWithSugar(document.URL.toString())
 
 Compare this improved example with the original version of `checkServer` seen in [Promises](#promises) section, they are equivalent. Now, however, `await` statement will take care of the promise returned by `fetch` for you. Let's call it the fetch promise. So, the `resolveCallback` for the fetch promise will automatically be setup with the pending tasks in our `async` function: the assignment of the response and the second line that returns. Then, the rest of the `async` function will be executed asynchronously once the fetch promise is resolved. As a result, we can write our code inline and sequentially without the need for callbacks.
 
-In the practice, this behaviour is equivalent to say that the `await` operator '*pauses the execution*' or '*waits for a promise*'. You may have read this definition before, but be careful, it suggests the wrong idea that `await` blocks or waits synchronously. 
+In the practice, this behaviour is equivalent to say that the `await` operator '*pauses the execution*' or '*waits for a promise*'. You may have read this definition before, but be careful, it suggests the wrong idea that `await` blocks or waits synchronously, and it does not. 
 
 ### Error handling
 
@@ -387,7 +394,9 @@ checkServerWithSugar(document.URL.toString())
 
 ### Multiple awaits timing
 
-Most of the time you will want to avoid stacking `await`s, unless one depends on the other. Stacking `await`s is equivalent to launch a promise upon the resolution of another promise. Look at the following example:
+Most of the time you will want to avoid stacking `await`s, unless one depends on the other. Stacking `await`s is equivalent to launch a promise upon the resolution of another promise.
+
+Look at the following example:
 
 ```js
 async function wait() {
@@ -397,7 +406,7 @@ async function wait() {
 };
 ``` 
 
-Only when the first `delay()` has been resolved, will the second be launched. Stacking `await`s mean synchronous waiting between `await`s. However, if we do it like this:
+Only when the first `delay()` has been resolved, will the second be launched. Stacking `await`s mean synchronous waiting between them. However, if we do it like this:
 
 ```js
 async function wait() {
@@ -409,7 +418,7 @@ async function wait() {
 };
 ```
 
-This is a much better approach. Both `delay()` calls are fired and we just wait for their resolution. By doing so, we allow the asynchronous `delay()` calls to happen concurrently.
+This is a much better approach. Both `delay()` calls are fired and we just wait for their resolution. By doing so, we allow the asynchronous `delay()` calls to happen concurrently, they will be progressing at the same time.
 
 
 
