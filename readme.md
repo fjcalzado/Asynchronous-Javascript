@@ -1,9 +1,9 @@
 ![Asynchronous Javascript Header](src/png/header.png)
 
 
-Asynchrony is one of the key features of Javascript. The goal of this guide is to go deeper into its building blocks and internals. By knowing how they work, you will be able to write better code and responsive apps. 
+**Asynchrony** is one of the key features of Javascript. The goal of this guide is to go deeper into its building blocks and internals. By knowing how they work, you will be able to write better code and responsive apps. 
 
-Explanations are supported by simple drawings to easily grasp concepts in a glimpse. First of all, we will review useful general ideas to better understand what's behind asynchronous programming. Then, we will move our focus to the specific Javascript model to verify how these concepts are applied. Finally, we will see the most common asynchronous patterns in Javascript through examples.
+Explanations are supported by simple drawings to easily grasp concepts in a glimpse. First of all, we will review useful general ideas to better understand what's behind **asynchronous programming**. Then, we will move our focus to the specific **Javascript model** to verify how these concepts are applied. Finally, we will see the most common **asynchronous patterns** in Javascript through examples.
 
 
 
