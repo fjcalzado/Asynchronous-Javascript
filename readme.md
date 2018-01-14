@@ -433,3 +433,4 @@ This is a much better approach. Both `delay()` calls are fired and we just wait 
   - Callback. Function to be run when an asynchronous operation ends.
   - Promise. It represents the result of an asynchronous operation. It can be setup with 2 callbacks to react upon its resolution or failure.
   - Async/Await. Syntactic sugar over promises to handle them in a simpler way. Async marks a function asynchronous while await handles the resolution of a promise automatically.
+  
